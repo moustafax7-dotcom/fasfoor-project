@@ -1,0 +1,19 @@
+.coupon-code { font-family: monospace; letter-spacing: 1px; }
+.loyalty-section { margin-top: 32px; }
+.loyalty-rules-card { background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: 22px; margin-bottom: 24px; }
+.loyalty-rules-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+.loyalty-rules-header h3 { font-size: 17px; }
+.loyalty-rules-header p { color: var(--color-muted); font-size: 13px; }
+.loyalty-rules-list { padding-right: 18px; font-size: 13px; line-height: 2; color: #444; }
+.tiers-title { margin-bottom: 12px; }
+.tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.tier-card { background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: 22px; text-align: center; display: flex; flex-direction: column; gap: 6px; }
+.tier-icon { font-size: 34px; }
+.tier-card strong { font-size: 16px; }
+.tier-points { font-size: 13px; color: var(--color-muted); }
+.tier-discount { font-size: 13px; color: var(--color-accent); font-weight: 700; }
+
+@media (max-width: 640px) {
+  .loyalty-rules-header { flex-direction: column; align-items: stretch; }
+  .loyalty-rules-header .add-btn { width: 100%; }
+}

@@ -1,0 +1,23 @@
+.branches-header, .offers-header { text-align: center; padding: 32px 20px 8px; }
+.branches-header h1, .offers-header h1 { font-size: 30px; color: var(--color-text-dark); }
+.branches-header p, .offers-header p { color: var(--color-muted); margin-top: 6px; }
+.branches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px; padding: 24px 32px 50px; }
+.branch-page-card { display: flex; background: var(--color-black); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid #221c15; }
+.branch-page-image { flex: 1 1 40%; min-height: 220px; }
+.branch-page-image img { width: 100%; height: 100%; object-fit: cover; }
+.branch-page-info { flex: 1 1 60%; padding: 20px; color: #fff; display: flex; flex-direction: column; gap: 8px; }
+.branch-page-tag { color: var(--color-muted); font-size: 12px; }
+.branch-page-info h3 { color: var(--color-gold-light); font-size: 22px; }
+.branch-page-categories { font-size: 13px; color: #cfcfcf; }
+.branch-page-meta { display: flex; flex-direction: column; gap: 6px; font-size: 13px; margin: 8px 0; }
+.meta-label { color: var(--color-muted); margin-left: 6px; }
+.branch-status { width: fit-content; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 50px; }
+.branch-status.open { background: #1e3d24; color: #6bd18a; }
+.branch-status.closed { background: #402323; color: #e08080; }
+.select-branch-btn { margin-top: 10px; background: var(--color-accent); color: #fff; font-weight: 800; padding: 12px; border-radius: 50px; }
+
+@media (max-width: 640px) {
+  .branches-grid { grid-template-columns: 1fr; padding: 16px 14px 40px; }
+  .branch-page-card { flex-direction: column; }
+  .branch-page-image { min-height: 180px; }
+}

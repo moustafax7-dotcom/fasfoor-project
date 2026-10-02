@@ -1,0 +1,10 @@
+import api from './api';
+export const getZones = (branch) => api.get('/admin/delivery-zones', { params: branch ? { branch } : {} }).then((r) => r.data);
+export const getZonesPublic = (branch) => api.get('/delivery-zones', { params: branch ? { branch } : {} }).then((r) => r.data);
+export const createZone = (data) => api.post('/admin/delivery-zones', data).then((r) => r.data);
+export const updateZone = (id, data) => api.put(`/admin/delivery-zones/${id}`, data).then((r) => r.data);
+export const deleteZone = (id) => api.delete(`/admin/delivery-zones/${id}`).then((r) => r.data);
+export const getReps = (branch) => api.get('/admin/delivery-reps', { params: branch ? { branch } : {} }).then((r) => r.data);
+export const createRep = (data) => api.post('/admin/delivery-reps', data).then((r) => r.data);
+export const updateRep = (id, data) => api.put(`/admin/delivery-reps/${id}`, data).then((r) => r.data);
+export const deleteRep = (id) => api.delete(`/admin/delivery-reps/${id}`).then((r) => r.data);

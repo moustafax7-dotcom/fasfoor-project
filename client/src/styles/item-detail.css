@@ -1,0 +1,29 @@
+.breadcrumb { padding: 16px 32px 0; font-size: 13px; color: var(--color-muted); }
+.breadcrumb a { color: var(--color-muted); }
+.breadcrumb span { color: var(--color-text-dark); font-weight: 700; }
+.item-detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 20px 32px 60px; align-items: start; }
+.item-detail-image { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4/3; }
+.item-detail-image img { width: 100%; height: 100%; object-fit: cover; }
+.item-detail-panel { background: var(--color-cream); border-radius: var(--radius-lg); padding: 28px; }
+.item-detail-panel h1 { font-size: 26px; margin-bottom: 6px; }
+.detail-branch { display: block; color: var(--color-muted); font-size: 13px; margin-bottom: 10px; }
+.item-detail-desc { color: #555; line-height: 1.7; margin-bottom: 20px; }
+.size-selector, .addons-list, .item-detail-notes { margin-bottom: 22px; }
+.size-selector h3, .addons-list h3, .item-detail-notes h3 { font-size: 15px; margin-bottom: 10px; }
+.size-options { display: flex; gap: 12px; flex-wrap: wrap; }
+.size-option { flex: 1 1 140px; background: #fff; border: 1px solid #e5ded0; border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; gap: 6px; text-align: right; }
+.size-option-active { border-color: var(--color-accent); background: #fff3ec; }
+.size-option strong { color: var(--color-accent); }
+.addons-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.addon-option { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #e5ded0; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; }
+.addon-selected { border-color: var(--color-accent); background: #fff3ec; }
+.addon-price { color: var(--color-accent); font-weight: 700; }
+.item-detail-notes textarea { width: 100%; min-height: 70px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid #ddd; font-family: inherit; resize: vertical; }
+.item-detail-footer { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.detail-price-label { display: block; font-size: 12px; color: var(--color-muted); }
+.detail-price { font-size: 26px; color: var(--color-text-dark); font-weight: 800; }
+.quantity-stepper-lg { display: flex; align-items: center; gap: 14px; background: #fff; border-radius: 50px; padding: 6px 16px; }
+.quantity-stepper-lg button { font-size: 18px; color: var(--color-accent); font-weight: 800; }
+.add-to-cart-btn { width: 100%; background: var(--color-accent); color: #fff; font-weight: 800; padding: 14px; border-radius: 50px; font-size: 15px; }
+.add-to-cart-btn:disabled { background: #ccc; }
+@media (max-width: 800px) { .item-detail-layout { grid-template-columns: 1fr; } }

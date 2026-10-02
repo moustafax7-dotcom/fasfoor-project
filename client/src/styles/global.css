@@ -1,0 +1,28 @@
+@import './variables.css';
+@import './header.css';
+@import './footer.css';
+@import './home.css';
+@import './menu.css';
+@import './cart.css';
+@import './item-detail.css';
+@import './delivery.css';
+@import './kitchen.css';
+@import './inventory.css';
+@import './loyalty.css';
+@import './permissions.css';
+@import './loyalty-status.css';
+@import './favorites-addresses.css';
+@import './branches.css';
+@import './offers.css';
+@import './account.css';
+@import './admin.css';
+@import './admin-tables.css';
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Cairo', 'Tajawal', sans-serif; background-color: var(--color-bg, #fff); color: var(--color-text); direction: rtl; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; font-family: inherit; background: none; }
+img { max-width: 100%; display: block; }
+.page-loading, .page-error { padding: 40px; text-align: center; }
+.page-error { color: #b3261e; }
+.link-btn { color: var(--color-accent); font-weight: 700; text-decoration: underline; }

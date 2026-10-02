@@ -1,0 +1,14 @@
+:root {
+  --color-black: #0E0C0B;
+  --color-gold: #C9A24B;
+  --color-gold-light: #E4C77A;
+  --color-accent: #E9622B;
+  --color-cream: #F4F1EA;
+  --color-text-light: #FFFFFF;
+  --color-text-dark: #1A1A1A;
+  --color-muted: #8A8378;
+  --radius-sm: 8px; --radius-md: 14px; --radius-lg: 24px;
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --font-display: 'Cairo', 'Tajawal', sans-serif;
+  --font-body: 'Tajawal', 'Cairo', sans-serif;
+}

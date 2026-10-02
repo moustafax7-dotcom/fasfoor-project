@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const { protectAdmin, authorize } = require('../middlewares/auth');
+const { getBranches, getBranchById, createBranch, updateBranch, deleteBranch } = require('../controllers/branchController');
+router.get('/', getBranches);
+router.get('/:id', getBranchById);
+router.post('/', protectAdmin, authorize('super_admin'), createBranch);
+router.put('/:id', protectAdmin, authorize('super_admin', 'branch_manager'), updateBranch);
+router.delete('/:id', protectAdmin, authorize('super_admin'), deleteBranch);
+module.exports = router;

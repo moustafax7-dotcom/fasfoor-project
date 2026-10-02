@@ -1,0 +1,24 @@
+.delivery-header-actions { display: flex; gap: 10px; order: 2; }
+.admin-delivery-page .admin-page-header { flex-direction: row-reverse; justify-content: space-between; align-items: flex-start; }
+.page-subtitle { color: var(--color-muted); font-size: 13px; margin-top: 4px; }
+.add-btn-outline { background: transparent; border: 1px solid var(--color-black); color: var(--color-text-dark); font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); }
+.delivery-zones-layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; margin-bottom: 28px; }
+.zones-list { background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: 16px; }
+.zones-list h3 { margin-bottom: 12px; font-size: 15px; }
+.zone-list-item { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.zone-item-actions { display: flex; gap: 4px; }
+.zone-item-actions button { background: #f2ece0; padding: 6px 8px; border-radius: var(--radius-sm); font-size: 12px; }
+.zone-card { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; background: #f9f6ef; border: 1px solid #eee; border-radius: var(--radius-sm); padding: 10px 14px; text-align: right; }
+.zone-card-active { border-color: var(--color-accent); background: #fff3ec; }
+.zone-color-dot { width: 10px; height: 10px; border-radius: 50%; }
+.zone-name { font-weight: 700; font-size: 13px; }
+.zone-fee { font-size: 11px; color: var(--color-muted); }
+.zones-map-placeholder { background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: 20px; }
+.zones-map-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; min-height: 200px; }
+.zone-block { border: 2px dashed; border-radius: var(--radius-md); padding: 20px; display: flex; flex-direction: column; gap: 6px; justify-content: center; align-items: center; text-align: center; }
+.zone-block-name { font-weight: 800; font-size: 15px; }
+.zone-block-desc { font-size: 11px; color: var(--color-muted); }
+.zones-map-note { margin-top: 14px; font-size: 12px; color: var(--color-muted); text-align: center; }
+.reps-section h3 { margin-bottom: 12px; }
+.reps-section select { padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid #ddd; font-size: 12px; }
+@media (max-width: 900px) { .delivery-zones-layout { grid-template-columns: 1fr; } .admin-delivery-page .admin-page-header { flex-direction: column; } }
