@@ -26,6 +26,9 @@ const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
 
+// حل مشكلة Express proxy و express-rate-limit على Vercel
+app.set('trust proxy', 1);
+
 app.use(cors({ origin: process.env.CLIENT_URL || true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
