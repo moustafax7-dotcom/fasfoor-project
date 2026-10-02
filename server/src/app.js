@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
 
 const authRoutes = require('./routes/authRoutes');
@@ -25,10 +26,20 @@ const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: process.env.CLIENT_URL || true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+// التأكد من الاتصال بقاعدة البيانات قبل تنفيذ أي طلب
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Database Connection Error', error: error.message });
+  }
+});
 
 app.get('/api/health', (req, res) => res.json({ success: true, message: 'Fasfoor API is running' }));
 
