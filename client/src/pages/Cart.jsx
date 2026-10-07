@@ -1,3 +1,5 @@
+import PageIntro from '../components/common/PageIntro.jsx';
+import StatePanel from '../components/common/StatePanel.jsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext.jsx';
@@ -70,16 +72,14 @@ const Cart = () => {
   if (!items.length) {
     return (
       <main className="cart-page cart-page-empty">
-        <h1>سلة الطلب</h1><p>سلتك فارغة حاليًا</p>
-        <button className="hero-order-btn" onClick={() => navigate('/menu')}>تصفح المنيو</button>
+        <PageIntro title="سلة الطلب" description="كل اختياراتك في مكان واحد." /><StatePanel title="سلتك لسه فاضية" description="اختار فرعك وضيف الأصناف اللي تحبها. هتراجع تفاصيل الطلب هنا قبل التأكيد." to="/menu" />
       </main>
     );
   }
 
   return (
     <main className="cart-page">
-      <h1>سلة الطلب</h1>
-      <p className="cart-subtitle">راجع طلبك قبل التأكيد</p>
+      <PageIntro title="سلة الطلب" description="راجع الأصناف، وطريقة الاستلام، والإجمالي قبل تأكيد طلبك." />
       {branchClosed && <div className="branch-closed-banner">🔒 الفرع مقفول دلوقتي — مينفعش تأكد الطلب لحد ما يفتح</div>}
       {!meetsMinimumOrder && (
         <div className="minimum-order-warning-banner">أقل قيمة للطلب {minimumOrderValue} جنيه — محتاج تضيف {amountToReachMinimum} جنيه كمان عشان تكمل</div>
@@ -99,8 +99,8 @@ const Cart = () => {
           <PaymentMethodSelector />
           <CouponBox branchId={branchId} subtotal={subtotal} appliedCoupon={appliedCoupon} onApply={setAppliedCoupon} onRemove={() => setAppliedCoupon(null)} />
           <div className="notes-box">
-            <label>ملاحظات الطلب (اختياري)</label>
-            <textarea maxLength={250} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="اكتب ملاحظاتك هنا..." />
+            <label htmlFor="order-notes">ملاحظات الطلب (اختياري)</label>
+            <textarea id="order-notes" maxLength={250} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="اكتب ملاحظاتك هنا..." />
             <span className="char-count">{notes.length}/250</span>
           </div>
           {error && <div className="page-error">{error}</div>}

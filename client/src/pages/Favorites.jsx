@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import PageIntro from '../components/common/PageIntro.jsx';
+import StatePanel from '../components/common/StatePanel.jsx';
 import MenuItemCard from '../components/menu/MenuItemCard.jsx';
 import { useFavorites } from '../context/FavoritesContext.jsx';
 import { useCustomerAuth } from '../context/CustomerAuthContext.jsx';
@@ -10,17 +11,16 @@ const Favorites = () => {
   if (!isAuthenticated) {
     return (
       <main className="favorites-page account-guest">
-        <h1>المفضلة</h1><p>سجّل دخولك لعرض الأصناف المفضلة عندك</p>
-        <Link to="/login" className="hero-order-btn">تسجيل الدخول</Link>
+        <PageIntro title="المفضلة" /><StatePanel title="احتفظ بالأصناف اللي بتحبها" description="سجّل دخولك علشان ترجع لاختياراتك بسهولة." to="/login" actionLabel="تسجيل الدخول" />
       </main>
     );
   }
 
   return (
     <main className="favorites-page">
-      <h1>المفضلة</h1>
+      <PageIntro title="المفضلة" description="اختياراتك المفضلة، جاهزة ترجع لها في أي وقت." />
       {!favoriteItems.length ? (
-        <div className="menu-empty">لسه مضفتش أي صنف للمفضلة. اضغط ♡ على أي صنف في المنيو عشان يتحفظ هنا.</div>
+        <StatePanel title="المفضلة لسه فاضية" description="اضغط علامة القلب على أي صنف في المنيو علشان يتحفظ هنا." to="/menu" />
       ) : (
         <div className="items-grid">{favoriteItems.map((item) => <MenuItemCard key={item._id} item={item} />)}</div>
       )}

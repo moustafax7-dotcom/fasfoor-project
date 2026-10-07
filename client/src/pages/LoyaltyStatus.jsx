@@ -1,5 +1,6 @@
+import PageIntro from '../components/common/PageIntro.jsx';
+import StatePanel from '../components/common/StatePanel.jsx';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import LoyaltyProgressBar from '../components/loyalty/LoyaltyProgressBar.jsx';
 import { useCustomerAuth } from '../context/CustomerAuthContext.jsx';
 import { getMyProfile } from '../services/customerAuthService.js';
@@ -20,14 +21,13 @@ const LoyaltyStatus = () => {
   if (!isAuthenticated) {
     return (
       <main className="loyalty-page account-guest">
-        <h1>نقاطي ومستواي</h1><p>سجّل دخولك لعرض نقاطك ومستوى عضويتك</p>
-        <Link to="/login" className="hero-order-btn">تسجيل الدخول</Link>
+        <PageIntro title="نقاطي ومستواي" /><StatePanel title="تابع رصيد نقاطك" description="سجّل دخولك علشان تشوف رصيدك والمزايا المتاحة لحسابك." to="/login" actionLabel="تسجيل الدخول" />
       </main>
     );
   }
 
   if (loading) return <div className="page-loading">جاري التحميل...</div>;
-  if (error) return <div className="page-error">{error}</div>;
+  if (error || !data) return <main className="loyalty-page"><StatePanel error title={error || "بيانات النقاط غير متاحة"} to="/account" actionLabel="العودة لحسابي" /></main>;
 
   const { customer, currentTier, loyaltyConfig } = data;
   const sortedTiers = [...(loyaltyConfig?.tiers || [])].sort((a, b) => a.minPoints - b.minPoints);
@@ -36,7 +36,7 @@ const LoyaltyStatus = () => {
 
   return (
     <main className="loyalty-page">
-      <h1>نقاطي ومستواي</h1>
+      <PageIntro title="نقاطي ومستواي" description="رصيدك والمزايا المتاحة حسب برنامج المطعم." />
       <div className="loyalty-points-card">
         <span className="loyalty-points-label">رصيدك الحالي</span>
         <strong className="loyalty-points-value">{customer.loyaltyPoints} نقطة</strong>
@@ -45,7 +45,7 @@ const LoyaltyStatus = () => {
       {currentTier && <LoyaltyProgressBar points={customer.loyaltyPoints} currentTier={currentTier} nextTier={nextTier} />}
       <div className="referral-card">
         <h3>ادعُ صحابك واكسبوا نقاط مع بعض 🎁</h3>
-        <p>كل صديق يسجل بكودك، هو ياخد 50 نقطة وانت كمان تاخد 50 نقطة فورًا</p>
+        <p>شارك كودك مع صحابك. مكافآت الدعوة بتتحدد حسب برنامج الولاء المفعّل من المطعم.</p>
         <div className="referral-code-box">
           <span>{customer.referralCode}</span>
           <button onClick={() => navigator.clipboard.writeText(customer.referralCode)}>نسخ الكود</button>

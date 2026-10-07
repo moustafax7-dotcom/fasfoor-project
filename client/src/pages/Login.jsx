@@ -49,24 +49,24 @@ const Login = () => {
       {step === 'phone' && (
         <form className="auth-form" onSubmit={handleSendOtp}>
           <h1>تسجيل الدخول</h1>
-          <p className="auth-sub">هنبعتلك كود تحقق برسالة على رقمك — مفيش باسورد تتذكره</p>
-          <label>رقم الهاتف</label>
-          <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="01xxxxxxxxx" />
+          <p className="auth-sub">الدخول برقم الهاتف وكود تحقق. لو الخدمة غير متاحة، هتظهر لك رسالة واضحة.</p>
+          <label htmlFor="customer-phone">رقم الهاتف</label>
+          <input id="customer-phone" type="tel" inputMode="tel" autoComplete="tel" dir="ltr" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="01xxxxxxxxx" />
           {isNewUser && (
             <>
-              <label>الاسم (أول مرة تدخل بالرقم ده)</label>
-              <input required value={name} onChange={(e) => setName(e.target.value)} />
+              <label htmlFor="customer-name">الاسم (أول مرة تدخل بالرقم ده)</label>
+              <input id="customer-name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
               {showReferral ? (
                 <>
-                  <label>كود دعوة (اختياري)</label>
-                  <input value={referralCode} onChange={(e) => setReferralCode(e.target.value)} placeholder="لو حد رشحلك" />
+                  <label htmlFor="referral-code">كود دعوة (اختياري)</label>
+                  <input id="referral-code" value={referralCode} onChange={(e) => setReferralCode(e.target.value)} placeholder="لو حد رشحلك" />
                 </>
               ) : (
                 <button type="button" className="link-btn referral-toggle" onClick={() => setShowReferral(true)}>عندك كود دعوة؟</button>
               )}
             </>
           )}
-          {error && <div className="page-error">{error}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
           <button type="submit" className="auth-submit" disabled={submitting}>{submitting ? 'جاري الإرسال...' : 'إرسال كود التحقق'}</button>
         </form>
       )}
@@ -74,9 +74,9 @@ const Login = () => {
         <form className="auth-form" onSubmit={handleVerify}>
           <h1>أدخل الكود</h1>
           <p className="auth-sub">بعتنالك كود تحقق على {phone}</p>
-          <label>كود التحقق (6 أرقام)</label>
-          <input type="text" required maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="000000" />
-          {error && <div className="page-error">{error}</div>}
+          <label htmlFor="verification-code">كود التحقق (6 أرقام)</label>
+          <input id="verification-code" type="text" dir="ltr" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" required minLength={6} maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="000000" />
+          {error && <div className="form-error" role="alert">{error}</div>}
           <button type="submit" className="auth-submit" disabled={submitting}>{submitting ? 'جاري التحقق...' : 'تأكيد الدخول'}</button>
           <p className="auth-switch"><button type="button" className="link-btn" onClick={() => setStep('phone')}>تغيير الرقم</button></p>
         </form>
