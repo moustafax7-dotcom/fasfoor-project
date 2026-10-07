@@ -132,6 +132,8 @@ The storefront follows the supplied black/gold references: dark public pages, wa
 
 ## Order behavior
 
+Storefront pages share clear headings, empty states, error recovery and sign-in links. Address saves report failures and block duplicate submissions. Item details preserve the selected branch when an item belongs to multiple branches; quantities are bounded to the API's 1–100 range. Order tracking distinguishes pickup, delivery and cancellation and displays only timestamps recorded by the API. The admin navigation collapses on small screens, and settings links lead to the existing operational editors.
+
 - Prices, add-ons, delivery charges and discounts are calculated by the API, not accepted from the browser's total.
 - Pickup orders have no delivery fee or delivery address.
 - Delivery orders require an address. A supplied zone must be active and belong to the selected branch. Without a zone, the current fallback delivery fee is 15 EGP.
