@@ -195,14 +195,27 @@ exports.updateOrderStatus = async (req, res, next) => {
     if (order.deliveryType === 'pickup' && status === 'out_for_delivery') {
       return res.status(400).json({ success: false, message: 'طلب الاستلام لا يتم إرساله للتوصيل' });
     }
-
-    order.status = status;
-    if (status === 'cancelled') order.cancelReason = cancelReason;
-    order.statusHistory.push({ status, at: new Date() });
-    await order.save();
-
-    if (order.customer?.phone) await notifyOrderStatus(order, order.customer.phone);
-
-    res.json({ success: true, data: order });
+    if (status === order.status) return res.json({ success: true, data: order });
+    const allowed = {
+      new: ['preparing', 'cancelled'],
+      preparing: ['ready', 'cancelled'],
+      ready: [order.deliveryType === 'pickup' ? 'delivered' : 'out_for_delivery', 'cancelled'],
+      out_for_delivery: ['delivered', 'cancelled'],
+    };
+    if (!allowed[order.status]?.includes(status)) {
+      return res.status(409).json({ success: false, message: 'لا يمكن الانتقال لهذه الحالة من حالة الطلب الحالية' });
+    }
+    if (status === 'cancelled' && (typeof cancelReason !== 'string' || !cancelReason.trim() || cancelReason.trim().length > 250)) {
+      return res.status(400).json({ success: false, message: 'اكتب سبب الإلغاء في حدود 250 حرفًا' });
+    }
+    // Compare the current status atomically: two operators must not advance the same revision twice.
+    const updated = await Order.findOneAndUpdate(
+      { _id: order._id, status: order.status },
+      { $set: { status, ...(status === 'cancelled' ? { cancelReason: cancelReason.trim() } : {}) }, $push: { statusHistory: { status, at: new Date() } } },
+      { new: true, runValidators: true },
+    ).populate('customer');
+    if (!updated) return res.status(409).json({ success: false, message: 'اتغيرت حالة الطلب، حدّث القائمة وحاول تاني' });
+    if (updated.customer?.phone) await notifyOrderStatus(updated, updated.customer.phone);
+    res.json({ success: true, data: updated });
   } catch (err) { next(err); }
 };
