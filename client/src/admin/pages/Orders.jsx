@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import OrderColumn from '../components/orders/OrderColumn.jsx';
-import { getOrders, updateOrderStatus } from '../../services/orderService.js';
+import { updateOrderStatus } from '../../services/orderService.js';
 import { getBranches } from '../../services/branchService.js';
+import { useOrderFeed } from '../../hooks/useOrderFeed.js';
 
 const columns = [
   { status: 'new', title: 'جديد' },
@@ -13,43 +14,35 @@ const columns = [
 ];
 
 const Orders = () => {
-  const [orders, setOrders] = useState([]);
   const [branches, setBranches] = useState([]);
   const [branchFilter, setBranchFilter] = useState('');
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const loadOrders = () => {
-    setLoading(true);
-    getOrders(branchFilter ? { branch: branchFilter } : {}).then((res) => setOrders(res.data || [])).catch(() => setError('تعذر تحميل الطلبات')).finally(() => setLoading(false));
-  };
-
-  useEffect(() => { getBranches().then((res) => setBranches(res.data || [])); }, []);
-  useEffect(() => { loadOrders(); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branchFilter]);
+  const [filterError, setFilterError] = useState(null);
+  const { orders, loading, refreshing, error, lastUpdated, refresh } = useOrderFeed(branchFilter);
+  useEffect(() => { getBranches().then((res) => setBranches(res.data || [])).catch(() => setFilterError('تعذر تحميل الفروع')); }, []);
 
   const handleUpdateStatus = async (id, status, cancelReason) => {
-    try { await updateOrderStatus(id, status, cancelReason); loadOrders(); }
-    catch { setError('تعذر تحديث حالة الطلب'); }
+    try { await updateOrderStatus(id, status, cancelReason); } finally { refresh(); }
   };
 
-  const filteredOrders = orders.filter((o) => !search || o.orderNumber.includes(search) || o.customer?.name?.includes(search));
+  const filteredOrders = orders.filter((o) => !search || o.orderNumber?.toLowerCase().includes(search.trim().toLowerCase()) || o.customer?.name?.includes(search));
 
   return (
     <div className="admin-orders-page">
       <div className="admin-page-header">
         <h1>الطلبات</h1>
         <div className="admin-filters">
-          <select value={branchFilter} onChange={(e) => setBranchFilter(e.target.value)}>
+          <select aria-label="تصفية حسب الفرع" value={branchFilter} onChange={(e) => setBranchFilter(e.target.value)}>
             <option value="">كل الفروع</option>
             {branches.map((b) => <option key={b._id} value={b._id}>{b.name}</option>)}
           </select>
-          <input placeholder="البحث برقم الطلب أو اسم العميل..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <input aria-label="البحث في الطلبات" placeholder="البحث برقم الطلب أو اسم العميل..." value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
       </div>
+      <div className="order-feed-toolbar"><span>آخر تحديث ناجح: {lastUpdated ? lastUpdated.toLocaleTimeString('ar-EG') : '—'} · تحديث تلقائي كل 15 ثانية</span><button type="button" className="edit-btn" onClick={refresh} disabled={refreshing}>{refreshing ? 'جاري التحديث…' : 'تحديث الآن'}</button></div>
+      {filterError && <p className="form-error" role="alert">{filterError}</p>}
       {loading && <div className="page-loading">جاري التحميل...</div>}
-      {error && <div className="page-error">{error}</div>}
+      {error && <div className="form-error" role="alert">{error}</div>}
       {!loading && (
         <div className="orders-board">
           {columns.map((col) => (

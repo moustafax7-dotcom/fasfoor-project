@@ -88,3 +88,55 @@ test('expired coupons are rejected and discounts never produce negative loyalty 
   assert.equal(res.body.data.total, 0);
   assert.equal(res.body.earnedPoints, 0);
 });
+
+function statusResponse() {
+  return { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; } };
+}
+function statusFixture(t, overrides = {}) {
+  const snapshot = { _id: new mongoose.Types.ObjectId(), status: 'new', deliveryType: 'delivery', branch: branchId, customer: { phone: 'test' }, ...overrides };
+  t.mock.method(Order, 'findById', () => ({ populate: async () => ({ ...snapshot }) }));
+  const writes = [];
+  t.mock.method(Order, 'findOneAndUpdate', (filter, update) => ({ populate: async () => {
+    if (filter.status !== snapshot.status) return null;
+    writes.push(update); Object.assign(snapshot, update.$set); return { ...snapshot };
+  } }));
+  return { snapshot, writes, run: async (status, cancelReason, admin = { role: 'super_admin' }) => {
+    const res = statusResponse();
+    await controller.updateOrderStatus({ params: { id: snapshot._id }, body: { status, cancelReason }, admin }, res, (err) => { throw err; });
+    return res;
+  } };
+}
+test('delivery advances in order, rejects skipped/reversed states and keeps completion terminal', async (t) => {
+  const flow = statusFixture(t);
+  assert.equal((await flow.run('delivered')).statusCode, 409);
+  for (const status of ['preparing', 'ready', 'out_for_delivery', 'delivered']) assert.equal((await flow.run(status)).statusCode, 200);
+  assert.equal((await flow.run('preparing')).statusCode, 409);
+  assert.equal((await flow.run('cancelled', 'too late')).statusCode, 409);
+  assert.equal((await flow.run('delivered')).statusCode, 200);
+  assert.equal(flow.writes.length, 4);
+  assert.equal(flow.writes[3].$push.statusHistory.status, 'delivered');
+});
+test('pickup completes at the branch, cancellation requires a reason and stays terminal', async (t) => {
+  const flow = statusFixture(t, { status: 'ready', deliveryType: 'pickup' });
+  assert.equal((await flow.run('out_for_delivery')).statusCode, 400);
+  assert.equal((await flow.run('cancelled', ' ')).statusCode, 400);
+  assert.equal((await flow.run('cancelled', 'x'.repeat(251))).statusCode, 400);
+  assert.equal((await flow.run('delivered')).statusCode, 200);
+  const cancelled = statusFixture(t, { status: 'preparing' });
+  assert.equal((await cancelled.run('cancelled', '  customer requested  ')).statusCode, 200);
+  assert.equal(cancelled.snapshot.cancelReason, 'customer requested');
+  assert.equal((await cancelled.run('ready')).statusCode, 409);
+});
+test('concurrent operators cannot append the same status transition twice', async (t) => {
+  const flow = statusFixture(t);
+  const results = await Promise.all([flow.run('preparing'), flow.run('preparing')]);
+  assert.deepEqual(results.map((res) => res.statusCode).sort(), [200, 409]);
+  assert.equal(flow.writes.length, 1);
+});
+test('another branch cannot change status, and missing orders return 404', async (t) => {
+  const flow = statusFixture(t);
+  assert.equal((await flow.run('preparing', undefined, { role: 'branch_manager', branch: new mongoose.Types.ObjectId() })).statusCode, 403);
+  assert.equal(flow.writes.length, 0);
+  t.mock.method(Order, 'findById', () => ({ populate: async () => null }));
+  assert.equal((await flow.run('preparing')).statusCode, 404);
+});

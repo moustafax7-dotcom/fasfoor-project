@@ -6,6 +6,7 @@ import AdminLogin from '../admin/pages/AdminLogin.jsx';
 import Dashboard from '../admin/pages/Dashboard.jsx';
 import Orders from '../admin/pages/Orders.jsx';
 import Items from '../admin/pages/Items.jsx';
+import Categories from '../admin/pages/Categories.jsx';
 import Inventory from '../admin/pages/Inventory.jsx';
 import Branches from '../admin/pages/Branches.jsx';
 import Offers from '../admin/pages/Offers.jsx';
@@ -31,6 +32,7 @@ const AdminRoutes = () => (
       <Route index element={<Dashboard />} />
       <Route path="orders" element={<Orders />} />
       <Route path="items" element={<Items />} />
+      <Route path="categories" element={<Categories />} />
       <Route path="inventory" element={<Inventory />} />
       <Route path="branches" element={<Branches />} />
       <Route path="offers" element={<Offers />} />

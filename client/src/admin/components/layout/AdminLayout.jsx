@@ -17,6 +17,7 @@ const AdminLayout = () => {
           <NavLink to="/admin" end>نظرة عامة</NavLink>
           <NavLink to="/admin/orders">الطلبات</NavLink>
           <NavLink to="/admin/items">الأصناف والأسعار</NavLink>
+          <NavLink to="/admin/categories">أقسام المنيو</NavLink>
           <NavLink to="/admin/inventory">المخزون والتنبيهات</NavLink>
           <NavLink to="/admin/branches">الفروع</NavLink>
           <NavLink to="/admin/offers">العروض</NavLink>
