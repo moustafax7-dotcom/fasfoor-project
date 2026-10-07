@@ -17,6 +17,7 @@ const Settings = () => {
           <Link to="/admin/branches">الفروع ومواعيد العمل</Link>
           <Link to="/admin/delivery">مناطق ورسوم التوصيل</Link>
           <Link to="/admin/items">الأصناف والأسعار</Link>
+          <Link to="/admin/categories">أقسام المنيو وترتيبها</Link>
           <Link to="/admin/permissions">حسابات وصلاحيات الموظفين</Link>
         </div>
       </div>

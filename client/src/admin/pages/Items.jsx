@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import ItemsTable from '../components/items/ItemsTable.jsx';
 import ItemFormModal from '../components/items/ItemFormModal.jsx';
 import { getItems, createItem, updateItem, toggleItemAvailability, approveItemPrice } from '../../services/itemService.js';
@@ -22,12 +23,12 @@ const Items = () => {
       .then((res) => setItems(res.data || [])).catch(() => setError('تعذر تحميل الأصناف')).finally(() => setLoading(false));
   };
 
-  useEffect(() => { Promise.all([getCategories(), getBranches()]).then(([c, b]) => { setCategories(c.data || []); setBranches(b.data || []); }); }, []);
+  useEffect(() => { Promise.all([getCategories(), getBranches()]).then(([c, b]) => { setCategories(c.data || []); setBranches(b.data || []); }).catch(() => setError("تعذر تحميل الأقسام والفروع")); }, []);
   useEffect(() => { loadItems(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [branchFilter, categoryFilter]);
 
-  const handleToggle = async (id) => { await toggleItemAvailability(id); loadItems(); };
-  const handleApprove = async (id) => { await approveItemPrice(id); loadItems(); };
+  const handleToggle = async (id) => { try { await toggleItemAvailability(id); loadItems(); } catch (err) { setError(err.response?.data?.message || "تعذر تحديث التوفر"); } };
+  const handleApprove = async (id) => { try { await approveItemPrice(id); loadItems(); } catch (err) { setError(err.response?.data?.message || "تعذر اعتماد السعر"); } };
   const handleSave = async (form) => {
     try {
       if (editingItem) await updateItem(editingItem._id, form); else await createItem(form);
@@ -41,6 +42,7 @@ const Items = () => {
         <h1>إدارة الأصناف والأسعار</h1>
         <button className="add-btn" onClick={() => { setEditingItem(null); setModalOpen(true); }}>+ إضافة صنف</button>
       </div>
+      <p className="items-category-help">عايز تضيف قسم أو تغيّر ترتيبه؟ <Link to="/admin/categories">إدارة أقسام المنيو</Link></p>
       <div className="admin-filters">
         <select value={branchFilter} onChange={(e) => setBranchFilter(e.target.value)}>
           <option value="">كل الفروع</option>
