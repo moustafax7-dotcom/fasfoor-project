@@ -23,10 +23,11 @@ const Menu = () => {
       .then(([branchesRes, categoriesRes]) => {
         const loadedBranches = branchesRes.data || [];
         setBranches(loadedBranches);
+        if (!loadedBranches.length) setLoading(false);
         setCategories(categoriesRes.data || []);
         if (!branchId && loadedBranches.length) switchBranch(loadedBranches[0]._id);
       })
-      .catch(() => setError('تعذر تحميل بيانات المنيو'));
+      .catch(() => { setError('تعذر تحميل بيانات المنيو'); setLoading(false); });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -34,7 +35,7 @@ const Menu = () => {
 
   useEffect(() => {
     if (!branchId) return;
-    setLoading(true);
+    setLoading(true); setError(null);
     getItems({ branch: branchId, category: activeCategory || undefined, availableOnly: true })
       .then((res) => setItems(res.data || []))
       .catch(() => setError('تعذر تحميل الأصناف'))
@@ -56,11 +57,12 @@ const Menu = () => {
       <CategoryTabs categories={categories} active={activeCategory} onSelect={setActiveCategory} />
       <div className="menu-layout">
         <section className="menu-content">
+          {!loading && !error && !branches.length && <p>المنيو غير متاح حاليًا. تواصل معنا للاستفسار.</p>}
           {loading && <div className="page-loading">جاري التحميل...</div>}
           {error && <div className="page-error">{error}</div>}
-          {!loading && !error && <MenuGrid items={items} branchOpen={currentBranch?.isOpen !== false} />}
+          {!!branches.length && !loading && !error && <MenuGrid items={items} branchOpen={currentBranch?.isOpen !== false} />}
         </section>
-        <CartSidebar branchOpen={currentBranch?.isOpen !== false} />
+        <CartSidebar branchOpen={currentBranch?.isOpen !== false} minimumOrderValue={currentBranch?.minimumOrderValue ?? 150} />
       </div>
     </main>
   );
