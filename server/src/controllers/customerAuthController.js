@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Customer = require('../models/Customer');
 const { JWT_SECRET, JWT_EXPIRES_IN } = require('../config/env');
-const { generateOtp, sendOtp } = require('../services/otpService');
+const { generateOtp, sendOtp, isOtpDeliveryAvailable } = require('../services/otpService');
 
 const generateToken = (id) => jwt.sign({ id, type: 'customer' }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 const OTP_EXPIRY_MINUTES = 5;
@@ -14,6 +14,9 @@ const REFERRAL_BONUS_POINTS = 50;
 // @route POST /api/customers/auth/otp/send  { phone, name?, referralCode? }
 exports.sendOtpCode = async (req, res, next) => {
   try {
+    if (!isOtpDeliveryAvailable() || !JWT_SECRET || JWT_SECRET.length < 32) {
+      return res.status(503).json({ success: false, message: 'خدمة تسجيل العملاء غير مفعّلة حاليًا' });
+    }
     const { phone, name, referralCode } = req.body;
     if (!phone || !/^01[0-9]{9}$/.test(phone)) {
       return res.status(400).json({ success: false, message: 'رقم الهاتف غير صالح' });
@@ -59,7 +62,13 @@ const MAX_OTP_ATTEMPTS = 5;
 // @route POST /api/customers/auth/otp/verify  { phone, otp }
 exports.verifyOtpCode = async (req, res, next) => {
   try {
+    if (!isOtpDeliveryAvailable() || !JWT_SECRET || JWT_SECRET.length < 32) {
+      return res.status(503).json({ success: false, message: 'خدمة تسجيل العملاء غير مفعّلة حاليًا' });
+    }
     const { phone, otp } = req.body;
+    if (typeof phone !== 'string' || !/^01[0-9]{9}$/.test(phone) || typeof otp !== 'string' || !/^[0-9]{6}$/.test(otp)) {
+      return res.status(400).json({ success: false, message: 'رقم الهاتف أو الكود غير صالح' });
+    }
     const customer = await Customer.findOne({ phone }).select('+otpCode +otpExpiresAt +otpAttempts');
 
     if (!customer || !customer.otpCode) {
