@@ -23,3 +23,6 @@
 .checkout-btn { width: 100%; background: var(--color-accent); color: #fff; font-weight: 800; padding: 12px; border-radius: 50px; margin-top: 8px; }
 .checkout-btn:disabled { background: #666; cursor: not-allowed; }
 @media (max-width: 900px) { .menu-layout { grid-template-columns: 1fr; } .cart-sidebar { position: static; } }
+
+.cart-delivery-note { color:#d5c9af; font-size:12px; line-height:1.8; margin:10px 0; }
+@media (max-width:800px) { .cart-sidebar { top:140px; } }

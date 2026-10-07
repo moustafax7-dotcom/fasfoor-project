@@ -12,3 +12,6 @@
 @media (max-width: 640px) {
   .offers-grid { grid-template-columns: 1fr; padding: 16px 14px 40px; }
 }
+
+.offer-image-placeholder { height:100%; min-height:190px; display:grid; place-items:center; background:#eee9dc; color:#8b682c; font-size:32px; font-weight:800; }
+.order-offer-btn { display:inline-block; text-align:center; }

@@ -1,5 +1,10 @@
-.site-footer { background: var(--color-black); color: var(--color-gold-light); display: flex; flex-wrap: wrap; justify-content: space-around; gap: 16px; padding: 24px 32px; text-align: center; font-size: 14px; }
-
-@media (max-width: 640px) {
-  .site-footer { padding: 20px 16px; font-size: 13px; gap: 10px; }
-}
+.site-footer { background:#171711; color:#d8c69a; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:28px; padding:34px clamp(22px,5vw,76px); border-top:1px solid #383222; }
+.footer-brand { display:flex; flex-direction:column; gap:3px; }
+.footer-brand strong { font-size:28px; }
+.footer-brand span { font-size:11px; color:#b1a486; }
+.site-footer nav { display:flex; flex-wrap:wrap; gap:24px; font-size:13px; color:#d4cdbd; }
+.site-footer nav a:hover { color:#fff; }
+.footer-contact { display:flex; flex-direction:column; gap:4px; text-align:end; }
+.footer-contact span { font-size:11px; color:#b1a486; }
+.footer-contact strong { font-size:24px; letter-spacing:2px; }
+@media (max-width:640px) { .site-footer { align-items:flex-start; } .site-footer nav { width:100%; order:3; justify-content:space-between; gap:12px; } }

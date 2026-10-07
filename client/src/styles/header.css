@@ -1,12 +1,12 @@
-.site-header { background: var(--color-black); color: var(--color-text-light); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; position: sticky; top: 0; z-index: 50; }
-.site-header nav { display: flex; gap: 28px; font-weight: 600; }
-.site-header nav a { opacity: 0.85; transition: opacity 0.2s, color 0.2s; }
-.site-header nav a:hover { opacity: 1; color: var(--color-gold); }
-.header-actions { display: flex; gap: 20px; align-items: center; }
-.site-header .logo { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--color-gold); object-fit: cover; }
-
-@media (max-width: 640px) {
-  .site-header { flex-direction: column; gap: 12px; padding: 16px; }
-  .site-header nav { flex-wrap: wrap; justify-content: center; gap: 12px; font-size: 13px; }
-  .header-actions { gap: 14px; }
-}
+.site-header { background:#171711; color:#f8f5eb; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:14px clamp(20px,4vw,60px); position:sticky; top:0; z-index:50; border-bottom:1px solid #353021; }
+.header-brand { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.header-brand > span { font-size:24px; font-weight:800; line-height:1.4; }
+.header-brand small { display:block; font-size:10px; font-weight:400; color:#c8ba94; }
+.site-header .logo { width:52px; height:52px; border-radius:50%; object-fit:cover; }
+.site-header nav { display:flex; gap:28px; font-size:14px; }
+.site-header nav a { color:#d4cdbd; padding:8px 0; border-bottom:1px solid transparent; }
+.site-header nav a:hover,.site-header nav a.active { color:#e5d2a0; border-color:#c9a24b; }
+.header-actions { display:flex; gap:20px; align-items:center; font-size:13px; }
+.header-cart { display:inline-flex; gap:14px; align-items:center; border:1px solid #5b5135; padding:8px 14px; border-radius:4px; }
+.header-cart span { color:#e5d2a0; min-width:14px; text-align:center; }
+@media (max-width:800px) { .site-header { flex-wrap:wrap; gap:12px; padding:12px 20px; } .site-header nav { order:3; width:100%; justify-content:space-between; gap:12px; border-top:1px solid #353021; padding-top:4px; } .header-brand > span { font-size:20px; } .site-header .logo { width:42px; height:42px; } .header-actions { gap:14px; } }

@@ -19,10 +19,12 @@
 @import './admin-tables.css';
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Cairo', 'Tajawal', sans-serif; background-color: var(--color-bg, #fff); color: var(--color-text); direction: rtl; }
+body { font-family: 'Cairo', 'Tajawal', sans-serif; background-color: var(--color-bg, #fff); color: var(--color-text-dark); direction: rtl; }
 a { text-decoration: none; color: inherit; }
 button { cursor: pointer; border: none; font-family: inherit; background: none; }
 img { max-width: 100%; display: block; }
 .page-loading, .page-error { padding: 40px; text-align: center; }
 .page-error { color: #b3261e; }
 .link-btn { color: var(--color-accent); font-weight: 700; text-decoration: underline; }
+
+:where(a, button, input, select, textarea):focus-visible { outline:2px solid #8b682c; outline-offset:4px; }
