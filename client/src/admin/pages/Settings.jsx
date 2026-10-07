@@ -1,4 +1,5 @@
 import { useAuth } from '../../context/AuthContext.jsx';
+import { Link } from 'react-router-dom';
 const Settings = () => {
   const { admin } = useAuth();
   return (
@@ -10,8 +11,14 @@ const Settings = () => {
         <div className="settings-row"><span>الدور</span><strong>{admin?.role}</strong></div>
       </div>
       <div className="settings-card">
-        <h3>معلومات إضافية</h3>
-        <p className="menu-empty">إعدادات المطعم العامة (ساعات العمل الافتراضية، رسوم التوصيل، بيانات التواصل) هتتضاف هنا لاحقًا حسب احتياج الإدارة.</p>
+        <h3>إدارة إعدادات التشغيل</h3>
+        <p>افتح القسم المناسب لتعديل البيانات من مكانها الأساسي.</p>
+        <div className="settings-links">
+          <Link to="/admin/branches">الفروع ومواعيد العمل</Link>
+          <Link to="/admin/delivery">مناطق ورسوم التوصيل</Link>
+          <Link to="/admin/items">الأصناف والأسعار</Link>
+          <Link to="/admin/permissions">حسابات وصلاحيات الموظفين</Link>
+        </div>
       </div>
     </div>
   );

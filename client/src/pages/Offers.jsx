@@ -1,3 +1,5 @@
+import PageIntro from '../components/common/PageIntro.jsx';
+import StatePanel from '../components/common/StatePanel.jsx';
 import { useEffect, useState } from 'react';
 import OfferCard from '../components/offers/OfferCard.jsx';
 import { getOffers } from '../services/offerService.js';
@@ -14,11 +16,12 @@ const Offers = () => {
 
   return (
     <main className="offers-page">
-      <div className="offers-header"><h1>عروض فسفور</h1><p>وجبات بحرية تكفي اللمة</p></div>
+      <PageIntro title="عروض فسفور" description="شوف العروض المتاحة وتفاصيل كل عرض قبل ما تختار." />
       {loading && <div className="page-loading">جاري التحميل...</div>}
-      {error && <div className="page-error">{error}</div>}
-      {!loading && !error && !offers.length && <div className="menu-empty">لا توجد عروض نشطة حاليًا</div>}
+      {error && <StatePanel error title={error} onRetry={() => window.location.reload()} />}
+      {!loading && !error && !offers.length && <StatePanel title="لا توجد عروض متاحة حاليًا" description="لسه تقدر تختار طلبك من المنيو حسب الفرع." to="/menu" />}
       <div className="offers-grid">{offers.map((o) => <OfferCard key={o._id} offer={o} />)}</div>
+    <section className="contact-section" aria-labelledby="contact-title"><div><p className="page-eyebrow">تواصل معانا</p><h2 id="contact-title">محتاج تسأل عن صنف أو عرض؟</h2><p>اتصل بالمطعم للاستفسار عن التوفر وتفاصيل طلبك.</p></div><a href="tel:17397" className="contact-number" dir="ltr">17397</a></section>
     </main>
   );
 };

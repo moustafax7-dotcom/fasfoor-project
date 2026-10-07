@@ -1,3 +1,5 @@
+import PageIntro from '../components/common/PageIntro.jsx';
+import StatePanel from '../components/common/StatePanel.jsx';
 import { useEffect, useState } from 'react';
 import CategoryTabs from '../components/home/CategoryTabs.jsx';
 import MenuGrid from '../components/menu/MenuGrid.jsx';
@@ -35,19 +37,20 @@ const Menu = () => {
 
   useEffect(() => {
     if (!branchId) return;
-    setLoading(true); setError(null);
+    let active = true;
+    setLoading(true); setError(null); setItems([]);
     getItems({ branch: branchId, category: activeCategory || undefined, availableOnly: true })
-      .then((res) => setItems(res.data || []))
-      .catch(() => setError('تعذر تحميل الأصناف'))
-      .finally(() => setLoading(false));
+      .then((res) => { if (active) setItems(res.data || []); })
+      .catch(() => { if (active) setError('تعذر تحميل الأصناف'); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, [branchId, activeCategory]);
 
   return (
     <main className="menu-page">
-      <div className="menu-page-header">
-        <h1>منيو الطعام</h1>
-        <BranchSelector branches={branches} selected={branchId} onChange={switchBranch} />
-      </div>
+      <PageIntro title="منيو الطعام" description="اختار فرعك، وبعدها اختار الأصناف والإضافات اللي تناسبك.">
+        <BranchSelector branches={branches} selected={branchId} onChange={(id) => { if (switchBranch(id)) setActiveCategory(null); }} />
+      </PageIntro>
       {currentBranch && !currentBranch.isOpen && (
         <div className="branch-closed-banner">
           🔒 الفرع ده مقفول دلوقتي (ساعات العمل: {currentBranch.workingHours?.from} - {currentBranch.workingHours?.to}).
@@ -57,9 +60,9 @@ const Menu = () => {
       <CategoryTabs categories={categories} active={activeCategory} onSelect={setActiveCategory} />
       <div className="menu-layout">
         <section className="menu-content">
-          {!loading && !error && !branches.length && <p>المنيو غير متاح حاليًا. تواصل معنا للاستفسار.</p>}
+          {!loading && !error && !branches.length && <StatePanel title="المنيو غير متاح حاليًا" description="الأصناف هتظهر هنا بعد إتاحتها من المطعم. للاستفسار اتصل على 17397." to="/branches" actionLabel="شوف الفروع" />}
           {loading && <div className="page-loading">جاري التحميل...</div>}
-          {error && <div className="page-error">{error}</div>}
+          {error && <StatePanel error title={error} onRetry={() => window.location.reload()} />}
           {!!branches.length && !loading && !error && <MenuGrid items={items} branchOpen={currentBranch?.isOpen !== false} />}
         </section>
         <CartSidebar branchOpen={currentBranch?.isOpen !== false} minimumOrderValue={currentBranch?.minimumOrderValue ?? 150} />

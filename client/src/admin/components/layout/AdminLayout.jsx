@@ -1,16 +1,19 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useAuth } from '../../../context/AuthContext.jsx';
 
 const AdminLayout = () => {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
+  const [navigationOpen, setNavigationOpen] = useState(false);
   const handleLogout = () => { logout(); navigate('/admin/login'); };
 
   return (
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <img src="/images/logo/logo.jpg" alt="فسفور" className="admin-logo" />
-        <nav>
+        <button className="admin-menu-toggle" type="button" aria-controls="admin-navigation" aria-expanded={navigationOpen} onClick={() => setNavigationOpen(!navigationOpen)}>أقسام الإدارة</button>
+        <nav id="admin-navigation" aria-label="أقسام الإدارة" className={navigationOpen ? 'admin-nav-expanded' : ''} onClick={() => setNavigationOpen(false)}>
           <NavLink to="/admin" end>نظرة عامة</NavLink>
           <NavLink to="/admin/orders">الطلبات</NavLink>
           <NavLink to="/admin/items">الأصناف والأسعار</NavLink>

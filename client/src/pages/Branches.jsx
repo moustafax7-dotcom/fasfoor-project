@@ -1,3 +1,5 @@
+import PageIntro from '../components/common/PageIntro.jsx';
+import StatePanel from '../components/common/StatePanel.jsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BranchCard from '../components/branches/BranchCard.jsx';
@@ -19,10 +21,10 @@ const Branches = () => {
 
   return (
     <main className="branches-page">
-      <div className="branches-header"><h1>فروع فسفور</h1><p>أقرب فرع ليك.. وخدمة بنفس الجودة والطعم المميز</p></div>
+      <PageIntro title="فروع فسفور" description="اختار الفرع المناسب ليك وشوف المنيو ومواعيد العمل." />
       {loading && <div className="page-loading">جاري التحميل...</div>}
-      {error && <div className="page-error">{error}</div>}
-      {!loading && !error && !branches.length && <p className="menu-empty">الفروع غير متاحة على الموقع حاليًا. تواصل معنا للاستفسار.</p>}
+      {error && <StatePanel error title={error} onRetry={() => window.location.reload()} />}
+      {!loading && !error && !branches.length && <StatePanel title="بيانات الفروع غير متاحة حاليًا" description="تقدر تتواصل مع المطعم على 17397 للاستفسار عن أقرب فرع." to="/" actionLabel="العودة للرئيسية" />}
       <div className="branches-grid">{branches.map((b) => <BranchCard key={b._id} branch={b} onSelect={handleSelect} />)}</div>
     </main>
   );
