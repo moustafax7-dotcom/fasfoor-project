@@ -9,7 +9,7 @@ const Hero = ({ branches = [], loading = false }) => {
     <section className="hero" aria-labelledby="home-title">
       <div className="hero-content">
         <p className="hero-eyebrow">فسفور · مأكولات بحرية</p>
-        <h1 id="home-title">البحر على<br /><span>سفرتك.</span></h1>
+        <h1 id="home-title">ليه تاكل أي حاجة<br /><span>لما ممكن تاكل أفيد حاجة</span></h1>
         <p className="hero-sub">اختار فرعك، شوف المنيو، وظبّط طلبك على ذوقك.</p>
         <div className="hero-actions">
           <Link to="/menu" className="hero-order-btn">تصفح المنيو <span aria-hidden="true">←</span></Link>
@@ -31,10 +31,10 @@ const Hero = ({ branches = [], loading = false }) => {
           </div>
         </div>
       </div>
-      <div className="hero-brand-panel" aria-label="هوية مطعم فسفور">
-        <div className="hero-brand-frame"><span className="hero-brand-caption">مأكولات بحرية</span><img src="/images/logo/logo.jpg" alt="شعار مطعم فسفور" width="280" height="280" /><span className="hero-brand-wordmark">فسفور</span><span className="hero-brand-note">اختيارات البحر. على ذوقك.</span></div>
-        <span className="hero-panel-footnote">FASFOOR / SEAFOOD</span>
-      </div>
+      <figure className="hero-food-panel">
+        <img src="/images/brand/seafood-hero.webp" alt="تشكيلة مأكولات بحرية — صورة تعبيرية" width="1536" height="1024" fetchPriority="high" />
+        <figcaption>صورة تعبيرية · صور الأصناف داخل المنيو</figcaption>
+      </figure>
     </section>
   );
 };

@@ -126,6 +126,10 @@ Local development stores uploads in `server/uploads`, served through Vite's `/up
 
 The homepage uses the existing Fasfoor identity with direct menu and branch navigation. Branch buttons select the branch before opening its menu. Navigation includes visible current-page and keyboard-focus states. Cart previews show item totals; delivery and discount calculations are reviewed during checkout. Offers are informational and use the existing telephone contact until an API-supported offer checkout is implemented.
 
+The storefront follows the supplied black/gold references: dark public pages, warm cream item and checkout panels, orange order actions, and light operational admin content. Responsive grids and horizontally scrollable mobile category tabs preserve the same branch-driven flow. Production data is never taken from mockup counters, contact details, delivery estimates or sample prices.
+
+`client/public/images/brand/seafood-hero.webp` is generated illustrative banner artwork, labelled as such on the homepage. Replace it with approved restaurant photography when available. Prompt: editorial Egyptian grilled seafood platter (sea bream, shrimp, calamari, lemon and parsley) on dark stone with warm gold side lighting, landscape composition, no text or logos. Created using the built-in image generation tool. Product and branch image fallbacks use the existing Fasfoor logo instead of broken image URLs or fabricated product photos.
+
 ## Order behavior
 
 - Prices, add-ons, delivery charges and discounts are calculated by the API, not accepted from the browser's total.

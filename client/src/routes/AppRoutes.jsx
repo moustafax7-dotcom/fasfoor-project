@@ -16,7 +16,7 @@ import Favorites from '../pages/Favorites.jsx';
 import Addresses from '../pages/Addresses.jsx';
 
 const AppRoutes = () => (
-  <>
+  <div className="storefront">
     <Header />
     <Routes>
       <Route path="/" element={<Home />} />
@@ -34,6 +34,6 @@ const AppRoutes = () => (
       <Route path="/login" element={<Login />} />
     </Routes>
     <Footer />
-  </>
+  </div>
 );
 export default AppRoutes;

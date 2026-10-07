@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext.jsx';
 
 const AdminLayout = () => {
@@ -11,20 +11,20 @@ const AdminLayout = () => {
       <aside className="admin-sidebar">
         <img src="/images/logo/logo.jpg" alt="فسفور" className="admin-logo" />
         <nav>
-          <Link to="/admin">نظرة عامة</Link>
-          <Link to="/admin/orders">الطلبات</Link>
-          <Link to="/admin/items">الأصناف والأسعار</Link>
-          <Link to="/admin/inventory">المخزون والتنبيهات</Link>
-          <Link to="/admin/branches">الفروع</Link>
-          <Link to="/admin/offers">العروض</Link>
-          <Link to="/admin/coupons">الكوبونات والولاء</Link>
-          <Link to="/admin/delivery">المندوبين والتوصيل</Link>
-          <Link to="/admin/kitchen" target="_blank">🍳 شاشة المطبخ</Link>
-          <Link to="/admin/customers">العملاء</Link>
-          <Link to="/admin/reports">التقارير</Link>
-          <Link to="/admin/permissions">صلاحيات الموظفين</Link>
-          <Link to="/admin/price-log">سجل تغييرات الأسعار</Link>
-          <Link to="/admin/settings">الإعدادات</Link>
+          <NavLink to="/admin" end>نظرة عامة</NavLink>
+          <NavLink to="/admin/orders">الطلبات</NavLink>
+          <NavLink to="/admin/items">الأصناف والأسعار</NavLink>
+          <NavLink to="/admin/inventory">المخزون والتنبيهات</NavLink>
+          <NavLink to="/admin/branches">الفروع</NavLink>
+          <NavLink to="/admin/offers">العروض</NavLink>
+          <NavLink to="/admin/coupons">الكوبونات والولاء</NavLink>
+          <NavLink to="/admin/delivery">المندوبين والتوصيل</NavLink>
+          <NavLink to="/admin/kitchen" target="_blank">شاشة المطبخ</NavLink>
+          <NavLink to="/admin/customers">العملاء</NavLink>
+          <NavLink to="/admin/reports">التقارير</NavLink>
+          <NavLink to="/admin/permissions">صلاحيات الموظفين</NavLink>
+          <NavLink to="/admin/price-log">سجل تغييرات الأسعار</NavLink>
+          <NavLink to="/admin/settings">الإعدادات</NavLink>
         </nav>
         <button onClick={handleLogout}>تسجيل خروج</button>
       </aside>
