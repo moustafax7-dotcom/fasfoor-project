@@ -1,5 +1,7 @@
 const Item = require('../models/Item');
 const PriceChangeLog = require('../models/PriceChangeLog');
+const { parseItemInput } = require('../services/itemInput');
+const { saveItemImage } = require('../services/itemImage');
 
 exports.getItems = async (req, res, next) => {
   try {
@@ -23,10 +25,14 @@ exports.getItemById = async (req, res, next) => {
 
 exports.createItem = async (req, res, next) => {
   try {
-    if (!req.body.branches || req.body.branches.length === 0) {
+    const data = parseItemInput(req.body);
+    if (!data.branches?.length) {
       return res.status(400).json({ success: false, message: 'يجب ربط الصنف بفرع واحد على الأقل' });
     }
-    const item = await Item.create(req.body);
+    const image = await saveItemImage(req.file);
+    if (image) data.image = image;
+    const { priceChangeReason, ...itemData } = data;
+    const item = await Item.create(itemData);
     res.status(201).json({ success: true, data: item });
   } catch (err) { next(err); }
 };
@@ -36,15 +42,21 @@ exports.updateItem = async (req, res, next) => {
     const existingItem = await Item.findById(req.params.id);
     if (!existingItem) return res.status(404).json({ success: false, message: 'الصنف غير موجود' });
 
-    const priceChanged = req.body.price !== undefined && Number(req.body.price) !== existingItem.price;
+    const data = parseItemInput(req.body);
+    if (data.branches && !data.branches.length) {
+      return res.status(400).json({ success: false, message: 'يجب ربط الصنف بفرع واحد على الأقل' });
+    }
+    const image = await saveItemImage(req.file);
+    if (image) data.image = image;
+    const priceChanged = data.price !== undefined && Number(data.price) !== existingItem.price;
 
-    if (req.body.price !== undefined || req.body.weightPrices !== undefined) {
-      req.body.isPriceApproved = false;
-      req.body.priceApprovedBy = null;
-      req.body.priceApprovedAt = null;
+    if (data.price !== undefined || data.weightPrices !== undefined) {
+      data.isPriceApproved = false;
+      data.priceApprovedBy = null;
+      data.priceApprovedAt = null;
     }
 
-    const { priceChangeReason, ...updateData } = req.body;
+    const { priceChangeReason, ...updateData } = data;
     const item = await Item.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
 
     if (priceChanged) {

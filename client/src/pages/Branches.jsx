@@ -22,6 +22,7 @@ const Branches = () => {
       <div className="branches-header"><h1>فروع فسفور</h1><p>أقرب فرع ليك.. وخدمة بنفس الجودة والطعم المميز</p></div>
       {loading && <div className="page-loading">جاري التحميل...</div>}
       {error && <div className="page-error">{error}</div>}
+      {!loading && !error && !branches.length && <p className="menu-empty">الفروع غير متاحة على الموقع حاليًا. تواصل معنا للاستفسار.</p>}
       <div className="branches-grid">{branches.map((b) => <BranchCard key={b._id} branch={b} onSelect={handleSelect} />)}</div>
     </main>
   );

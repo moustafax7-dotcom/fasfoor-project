@@ -1,14 +1,17 @@
-/**
- * إرسال كود التحقق للعميل. حاليًا Mock (بيطبع الكود في الـ console) لحد ما يترتبط
- * بمزوّد SMS/WhatsApp حقيقي (Twilio، Vonage، أو WhatsApp Cloud API مباشرة).
- * الاستبدال محصور في sendOtp بس.
- */
-const generateOtp = () => String(Math.floor(100000 + Math.random() * 900000));
+const { randomInt } = require('node:crypto');
+
+const generateOtp = () => String(randomInt(100000, 1000000));
+const isOtpDeliveryAvailable = () => process.env.NODE_ENV !== 'production' && !process.env.VERCEL;
 
 const sendOtp = async (phone, otp) => {
-  // TODO: استبدال باستدعاء حقيقي لمزوّد SMS/WhatsApp
-  console.log(`[otp] ${phone} -> ${otp}`);
+  if (!isOtpDeliveryAvailable()) {
+    const error = new Error('خدمة إرسال كود التحقق غير مفعّلة حاليًا');
+    error.status = 503;
+    throw error;
+  }
+  // Development only. Connect a real SMS provider before enabling production sign-in.
+  console.log(`[otp:development] ${phone} -> ${otp}`);
   return true;
 };
 
-module.exports = { generateOtp, sendOtp };
+module.exports = { generateOtp, sendOtp, isOtpDeliveryAvailable };

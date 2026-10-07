@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useMemo } from 'react';
 const CartContext = createContext();
 const MINIMUM_ORDER_VALUE = 150; // حد أدنى لقيمة الطلب - يحمي المطعم من طلبات غير مربحة
 
-const cartKey = (i) => `${i.itemId}-${i.unit}-${(i.addOns || []).sort().join(',')}`;
+const cartKey = (i) => `${i.itemId}-${i.unit}-${[...(i.addOns || [])].sort().join(',')}`;
 
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState([]);

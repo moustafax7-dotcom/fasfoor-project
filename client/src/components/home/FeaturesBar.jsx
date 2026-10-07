@@ -1,18 +1,12 @@
-const features = [
-  { icon: '🦐', title: 'تتبيلة فسفور', subtitle: 'سر الطعم الفريد' },
-  { icon: '👨‍🍳', title: 'شيفات متخصصين', subtitle: 'خبرة في كل طبق' },
-  { icon: '🏅', title: 'جودة مضمونة', subtitle: 'طازج يوميًا' },
-  { icon: '🏍️', title: 'توصيل سريع', subtitle: 'لحد بابك ساخن' },
+const steps = [
+  { title: 'اختار فرعك', detail: 'شوف الأصناف المتاحة في الفرع المناسب ليك.' },
+  { title: 'ظبّط طلبك', detail: 'اختار الحجم والإضافات وراجع سعر كل صنف.' },
+  { title: 'راجع قبل التأكيد', detail: 'التوصيل أو الاستلام، والخصم، والإجمالي في مكان واحد.' },
 ];
 const FeaturesBar = () => (
-  <div className="features-bar">
-    <div className="feature feature-phone"><div>للطلب والاستفسار</div><strong>17397</strong></div>
-    {features.map((f) => (
-      <div className="feature" key={f.title}>
-        <span className="feature-icon">{f.icon}</span>
-        <div><strong>{f.title}</strong><div>{f.subtitle}</div></div>
-      </div>
-    ))}
-  </div>
+  <section className="order-guide" aria-labelledby="order-guide-title">
+    <div className="order-guide-heading"><p>من المنيو لطلبك</p><h2 id="order-guide-title">كل التفاصيل قدامك.</h2></div>
+    <ol>{steps.map((step, index) => <li key={step.title}><span className="order-guide-number" aria-hidden="true">0{index + 1}</span><div><h3>{step.title}</h3><p>{step.detail}</p></div></li>)}</ol>
+  </section>
 );
 export default FeaturesBar;

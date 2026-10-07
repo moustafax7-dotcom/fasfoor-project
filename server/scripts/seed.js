@@ -1,7 +1,7 @@
 /**
- * سكريبت تعبئة قاعدة البيانات ببيانات فسفور الحقيقية
+ * Development demo data. Review the menu, prices and contact details before using them.
  * التشغيل: npm run seed   (بعد ضبط MONGO_URI في .env)
- * تحذير: يمسح البيانات الحالية في المجموعات المستهدفة قبل الإدخال.
+ * Only runs on empty development collections; never deletes existing data.
  */
 
 require('dotenv').config();
@@ -61,15 +61,18 @@ async function seed() {
     process.exit(1);
   }
 
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    throw new Error('Demo seeding is disabled in production. Use the admin tools to add approved restaurant data.');
+  }
+
   await mongoose.connect(process.env.MONGO_URI);
   console.log('اتصل بقاعدة البيانات');
 
-  await Promise.all([
-    Admin.deleteMany({}), Branch.deleteMany({}), Category.deleteMany({}), Item.deleteMany({}),
-    Offer.deleteMany({}), Customer.deleteMany({}), Coupon.deleteMany({}), LoyaltyConfig.deleteMany({}),
-    DeliveryZone.deleteMany({}), DeliveryRep.deleteMany({}), RolePermission.deleteMany({}),
-  ]);
-  console.log('المجموعات القديمة اتمسحت');
+  const models = [Admin, Branch, Category, Item, Offer, Customer, Coupon, LoyaltyConfig, DeliveryZone, DeliveryRep, RolePermission];
+  const counts = await Promise.all(models.map((model) => model.countDocuments()));
+  if (counts.some((count) => count > 0)) {
+    throw new Error('Demo seeding requires empty collections. No existing data was changed.');
+  }
 
   const nasrCity = await Branch.create({
     name: 'فرع مدينة نصر', city: 'القاهرة',
@@ -176,5 +179,5 @@ async function seed() {
 
 seed().catch((err) => {
   console.error('فشلت عملية التعبئة:', err);
-  process.exit(1);
+  mongoose.disconnect().finally(() => { process.exitCode = 1; });
 });

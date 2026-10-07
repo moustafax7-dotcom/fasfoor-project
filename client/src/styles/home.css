@@ -1,19 +1,43 @@
-.hero { display: flex; flex-wrap: wrap; background: var(--color-black); color: var(--color-text-light); position: relative; }
-.hero-image { flex: 1 1 420px; min-height: 420px; position: relative; overflow: hidden; }
-.hero-image img { width: 100%; height: 100%; object-fit: cover; }
-.hero-badge { position: absolute; top: 24px; left: 24px; background: rgba(14, 12, 11, 0.85); border: 1px solid var(--color-gold); color: var(--color-gold-light); padding: 10px 18px; border-radius: 50px; font-size: 13px; font-weight: 700; }
-.hero-content { flex: 1 1 420px; padding: 48px 40px; display: flex; flex-direction: column; gap: 16px; }
-.hero-content h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; color: var(--color-gold-light); line-height: 1.35; }
-.hero-sub { color: #cfcfcf; font-size: 16px; }
-.hero-branch-label { color: var(--color-gold); font-weight: 700; margin-top: 12px; }
-.hero-branches { display: flex; gap: 16px; flex-wrap: wrap; }
-.branch-card { background: #1A1714; border: 1px solid #33291a; border-radius: var(--radius-md); padding: 16px 20px; flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px; }
-.branch-tag { font-size: 12px; color: var(--color-muted); }
-.branch-card h3 { color: var(--color-text-light); font-size: 18px; }
-.branch-time { font-size: 13px; color: var(--color-gold-light); }
-.branch-cta { margin-top: 8px; background: transparent; border: 1px solid var(--color-gold); color: var(--color-gold-light); padding: 8px; border-radius: var(--radius-sm); font-weight: 700; transition: background 0.2s; }
-.branch-cta:hover { background: var(--color-gold); color: var(--color-black); }
-.hero-order-btn { align-self: flex-start; background: var(--color-accent); color: #fff; font-weight: 800; padding: 14px 32px; border-radius: 50px; margin-top: 8px; }
+/* Brand-led storefront; item styles below are shared with the menu. */
+.hero { display:grid; grid-template-columns:1.15fr 1fr; min-height:620px; background:#f4f1ea; color:#171612; border-bottom:1px solid #ddd6c7; }
+.hero-content { padding:clamp(30px,5vw,76px); display:flex; flex-direction:column; align-items:flex-start; }
+.hero-eyebrow { font-size:13px; font-weight:700; color:#756546; margin-bottom:24px; }
+.hero-content h1 { font-size:clamp(52px,6.5vw,92px); font-weight:800; line-height:1.17; letter-spacing:-2px; }
+.hero-content h1 span { color:#8b682c; }
+.hero-sub { margin-top:24px; max-width:380px; font-size:17px; line-height:1.9; color:#5c584f; }
+.hero-actions { display:flex; align-items:center; flex-wrap:wrap; gap:24px; margin-top:30px; }
+.hero-order-btn { display:inline-flex; align-items:center; justify-content:space-between; gap:32px; background:#181711; color:#fff; padding:14px 24px; border-radius:4px; font-weight:700; transition:background .2s; }
+.hero-order-btn:hover { background:#695326; }
+.hero-secondary { font-size:14px; border-bottom:1px solid #8b682c; padding-bottom:4px; }
+.hero-branch-picker { width:100%; margin-top:42px; padding-top:22px; border-top:1px solid #d3cbb9; }
+.hero-branch-heading { display:flex; justify-content:space-between; gap:12px; font-size:14px; font-weight:700; }
+.hero-branch-hint { font-size:12px; color:#756b58; font-weight:400; }
+.hero-availability { margin-top:14px; color:#696357; font-size:13px; line-height:1.8; }
+.hero-branches { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; margin-top:14px; }
+.hero-branch-card { position:relative; border:1px solid #cec5b2; border-radius:4px; padding:16px 16px 16px 34px; text-align:start; display:grid; gap:5px; color:#171612; background:#faf8f3; }
+.hero-branch-card:hover { border-color:#8b682c; background:#fff; }
+.hero-branch-name { font-size:16px; font-weight:700; }
+.hero-branch-status { font-size:11px; color:#756b58; }
+.hero-branch-status.is-open { color:#266347; }
+.hero-branch-detail { font-size:11px; color:#756b58; }
+.hero-branch-arrow { position:absolute; left:14px; top:20px; font-size:20px; }
+.hero-brand-panel { background:#171711; color:#dccb9a; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:44px; position:relative; }
+.hero-brand-frame { width:min(100%,350px); padding:34px 20px; border:1px solid #6c603c; outline:1px solid #3b3727; outline-offset:10px; display:flex; align-items:center; flex-direction:column; gap:18px; }
+.hero-brand-caption { font-size:13px; letter-spacing:2px; }
+.hero-brand-frame img { width:clamp(160px,18vw,235px); height:auto; border-radius:50%; }
+.hero-brand-wordmark { font-size:46px; line-height:1.2; font-weight:800; }
+.hero-brand-note { font-size:13px; color:#b9ac86; }
+.hero-panel-footnote { position:absolute; bottom:22px; font-size:10px; letter-spacing:3px; direction:ltr; color:#8f8264; }
+.order-guide { padding:54px clamp(22px,5vw,76px); display:grid; grid-template-columns:1fr 2.5fr; gap:36px; background:#fff; }
+.order-guide-heading > p { color:#8b682c; font-size:12px; margin-bottom:10px; }
+.order-guide-heading h2 { font-size:25px; line-height:1.5; }
+.order-guide ol { list-style:none; display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+.order-guide li { display:flex; gap:12px; padding-top:8px; }
+.order-guide-number { font-family:Georgia,serif; color:#9a7d45; font-size:24px; line-height:1.3; }
+.order-guide h3 { font-size:15px; margin-bottom:8px; }
+.order-guide li p { color:#706a5f; font-size:13px; line-height:1.9; }
+@media (max-width:900px) { .hero { grid-template-columns:1.1fr .9fr; } .hero-content { padding:38px 28px; } .hero-brand-panel { padding:38px 28px; } .order-guide { grid-template-columns:1fr; gap:26px; } }
+@media (max-width:640px) { .hero { grid-template-columns:1fr; } .hero-content { padding:36px 22px; } .hero-content h1 { font-size:58px; } .hero-brand-panel { min-height:270px; padding:28px 26px 48px; } .hero-brand-frame { width:100%; max-width:400px; padding:22px; gap:10px; } .hero-brand-frame img { width:105px; } .hero-brand-wordmark { font-size:30px; } .hero-brand-caption { font-size:11px; } .hero-branch-picker { margin-top:30px; } .order-guide { padding:36px 22px; } .order-guide ol { grid-template-columns:1fr; gap:20px; } }
 .category-tabs { display: flex; gap: 12px; flex-wrap: wrap; padding: 24px 32px; background: var(--color-cream); }
 .tab { background: #fff; border: 1px solid #e5ded0; padding: 10px 20px; border-radius: 50px; font-weight: 700; color: var(--color-text-dark); }
 .tab-active { background: var(--color-black); color: var(--color-gold-light); border-color: var(--color-black); }
@@ -32,9 +56,4 @@
 .item-add { background: var(--color-accent); color: #fff; font-weight: 700; padding: 8px 16px; border-radius: 50px; font-size: 13px; }
 .item-add:disabled { background: #ccc; cursor: not-allowed; }
 .item-price { font-weight: 800; color: var(--color-text-dark); }
-.features-bar { background: var(--color-black); color: var(--color-gold-light); display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; padding: 28px 32px; text-align: center; }
-.feature { display: flex; align-items: center; gap: 10px; font-size: 14px; }
-.feature-icon { font-size: 22px; }
-.feature-phone strong { font-size: 20px; color: var(--color-accent); }
 .branch-closed-banner, .minimum-order-warning-banner { background: #fdf1e0; color: #b5751a; padding: 14px 32px; font-weight: 700; text-align: center; }
-@media (max-width: 640px) { .site-header { flex-direction: column; gap: 12px; padding: 16px; } .site-header nav { flex-wrap: wrap; justify-content: center; gap: 14px; } .hero-content { padding: 28px 20px; } }

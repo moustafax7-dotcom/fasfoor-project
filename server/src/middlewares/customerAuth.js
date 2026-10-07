@@ -9,6 +9,9 @@ const protectCustomer = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'غير مصرح - برجاء تسجيل الدخول' });
     }
     const decoded = jwt.verify(authHeader.split(' ')[1], JWT_SECRET);
+    if (decoded.type !== 'customer') {
+      return res.status(401).json({ success: false, message: 'توكن العميل مطلوب' });
+    }
     const customer = await Customer.findById(decoded.id).select('-password');
     if (!customer) return res.status(401).json({ success: false, message: 'المستخدم غير موجود' });
     req.customer = customer;

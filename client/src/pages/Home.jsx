@@ -24,12 +24,11 @@ const Home = () => {
     return () => { mounted = false; };
   }, []);
 
-  if (loading) return <div className="page-loading">جاري التحميل...</div>;
-  if (error) return <div className="page-error">{error}</div>;
 
   return (
     <main className="home-page">
-      <Hero branches={branches} />
+      <Hero branches={branches} loading={loading} />
+      {error && <div className="page-error" role="alert">{error}</div>}
       <MostOrdered items={mostOrdered} />
       <FeaturesBar />
     </main>

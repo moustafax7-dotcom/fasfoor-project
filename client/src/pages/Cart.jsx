@@ -11,9 +11,10 @@ import { createOrder } from '../services/orderService.js';
 import { getBranchById } from '../services/branchService.js';
 
 const Cart = () => {
-  const { items, branchId, subtotal, clearCart, meetsMinimumOrder, amountToReachMinimum, MINIMUM_ORDER_VALUE } = useCart();
+  const { items, branchId, subtotal, clearCart, cartKey } = useCart();
   const navigate = useNavigate();
   const [branch, setBranch] = useState(null);
+  const [deliveryType, setDeliveryType] = useState('delivery');
   const [notes, setNotes] = useState('');
   const [address, setAddress] = useState('');
   const [selectedZone, setSelectedZone] = useState(null);
@@ -21,29 +22,41 @@ const Cart = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => { if (branchId) getBranchById(branchId).then((res) => setBranch(res.data)).catch(() => {}); }, [branchId]);
+  useEffect(() => {
+    let active = true;
+    setBranch(null);
+    setSelectedZone(null);
+    setAppliedCoupon(null);
+    if (branchId) getBranchById(branchId)
+      .then((res) => { if (active) setBranch(res.data); })
+      .catch(() => { if (active) setError('تعذر تحميل الفرع، برجاء إعادة المحاولة'); });
+    return () => { active = false; };
+  }, [branchId]);
 
-  const deliveryFee = selectedZone?.deliveryFee ?? 15;
+  const minimumOrderValue = branch?.minimumOrderValue ?? 150;
+  const meetsMinimumOrder = subtotal >= minimumOrderValue;
+  const amountToReachMinimum = Math.max(0, minimumOrderValue - subtotal);
+  const deliveryFee = deliveryType === 'pickup' ? 0 : (selectedZone?.deliveryFee ?? 15);
   const discountAmount = appliedCoupon
     ? (appliedCoupon.discountType === 'percentage' ? Math.round((subtotal * appliedCoupon.value) / 100) : Math.min(appliedCoupon.value, subtotal))
     : 0;
   const total = Math.max(0, subtotal - discountAmount) + (items.length ? deliveryFee : 0);
   const branchClosed = branch && !branch.isOpen;
-  const canConfirm = meetsMinimumOrder && !branchClosed;
+  const canConfirm = Boolean(branch) && meetsMinimumOrder && !branchClosed;
 
   const handleConfirm = async () => {
     if (!items.length) return;
     if (branchClosed) { setError('الفرع مقفول دلوقتي، مينفعش تأكد الطلب'); return; }
-    if (!meetsMinimumOrder) { setError(`أقل قيمة للطلب ${MINIMUM_ORDER_VALUE} جنيه`); return; }
-    if (!address) { setError('برجاء إضافة عنوان التوصيل أولًا'); return; }
+    if (!meetsMinimumOrder) { setError(`أقل قيمة للطلب ${minimumOrderValue} جنيه`); return; }
+    if (deliveryType === 'delivery' && !address.trim()) { setError('برجاء إضافة عنوان التوصيل أولًا'); return; }
 
     setSubmitting(true); setError(null);
     try {
       const payload = {
         branch: branchId,
         items: items.map((i) => ({ item: i.itemId, unit: i.unit, quantity: i.quantity, addOns: i.addOns || [], notes: i.notes })),
-        deliveryType: 'delivery', deliveryAddress: { fullAddress: address }, notes,
-        deliveryZone: selectedZone?._id,
+        deliveryType, deliveryAddress: deliveryType === 'delivery' ? { fullAddress: address } : undefined, notes,
+        deliveryZone: deliveryType === 'delivery' ? selectedZone?._id : undefined,
         couponCode: appliedCoupon?.code, paymentMethod: 'cash', total,
       };
       const res = await createOrder(payload);
@@ -69,13 +82,20 @@ const Cart = () => {
       <p className="cart-subtitle">راجع طلبك قبل التأكيد</p>
       {branchClosed && <div className="branch-closed-banner">🔒 الفرع مقفول دلوقتي — مينفعش تأكد الطلب لحد ما يفتح</div>}
       {!meetsMinimumOrder && (
-        <div className="minimum-order-warning-banner">أقل قيمة للطلب {MINIMUM_ORDER_VALUE} جنيه — محتاج تضيف {amountToReachMinimum} جنيه كمان عشان تكمل</div>
+        <div className="minimum-order-warning-banner">أقل قيمة للطلب {minimumOrderValue} جنيه — محتاج تضيف {amountToReachMinimum} جنيه كمان عشان تكمل</div>
       )}
       <div className="cart-layout">
-        <div className="cart-items-list">{items.map((i) => <CartItemRow key={`${i.itemId}-${i.unit}`} item={i} />)}</div>
+        <div className="cart-items-list">{items.map((i) => <CartItemRow key={cartKey(i)} item={i} />)}</div>
         <div className="cart-side">
-          <AddressBox address={address} onChange={setAddress} />
-          <ZoneSelector branchId={branchId} selectedZoneId={selectedZone?._id} onSelect={setSelectedZone} />
+          <label htmlFor="delivery-type">طريقة الاستلام</label>
+          <select id="delivery-type" value={deliveryType} onChange={(e) => setDeliveryType(e.target.value)}>
+            <option value="delivery">توصيل</option>
+            <option value="pickup">استلام من الفرع</option>
+          </select>
+          {deliveryType === 'delivery' && <>
+            <AddressBox address={address} onChange={setAddress} />
+            <ZoneSelector branchId={branchId} selectedZoneId={selectedZone?._id} onSelect={setSelectedZone} />
+          </>}
           <PaymentMethodSelector />
           <CouponBox branchId={branchId} subtotal={subtotal} appliedCoupon={appliedCoupon} onApply={setAppliedCoupon} onRemove={() => setAppliedCoupon(null)} />
           <div className="notes-box">

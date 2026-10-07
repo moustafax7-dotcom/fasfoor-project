@@ -9,6 +9,9 @@ const protectAdmin = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'غير مصرح - برجاء تسجيل الدخول' });
     }
     const decoded = jwt.verify(authHeader.split(' ')[1], JWT_SECRET);
+    if (decoded.type !== 'admin') {
+      return res.status(401).json({ success: false, message: 'توكن الأدمن مطلوب، سجّل الدخول مرة أخرى' });
+    }
     const admin = await Admin.findById(decoded.id).select('-password');
     if (!admin || !admin.isActive) {
       return res.status(401).json({ success: false, message: 'المستخدم غير موجود أو غير مفعل' });

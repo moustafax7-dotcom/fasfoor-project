@@ -40,7 +40,8 @@ app.use(async (req, res, next) => {
     await connectDB();
     next();
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Database Connection Error', error: error.message });
+    console.error('Database connection failed:', error.message);
+    res.status(503).json({ success: false, message: 'تعذر الاتصال بقاعدة البيانات، حاول مرة أخرى لاحقًا' });
   }
 });
 
