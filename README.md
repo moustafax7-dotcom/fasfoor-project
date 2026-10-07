@@ -130,6 +130,14 @@ The storefront follows the supplied black/gold references: dark public pages, wa
 
 `client/public/images/brand/seafood-hero.webp` is generated illustrative banner artwork, labelled as such on the homepage. Replace it with approved restaurant photography when available. Prompt: editorial Egyptian grilled seafood platter (sea bream, shrimp, calamari, lemon and parsley) on dark stone with warm gold side lighting, landscape composition, no text or logos. Created using the built-in image generation tool. Product and branch image fallbacks use the existing Fasfoor logo instead of broken image URLs or fabricated product photos.
 
+## Restaurant operations
+
+Administrators can view menu categories at `/admin/categories`; super administrators can add, rename, assign a short icon, and set their display order. Category input is validated, protected fields cannot be written, and duplicate names return a conflict. The existing delete API rejects categories referenced by items; the editor intentionally exposes no delete action.
+
+Orders and the kitchen screen refresh every 15 seconds while visible and offer manual refresh. They retain the last successful snapshot on fetch failure and show the last successful update time instead of claiming a connection. The kitchen print button opens the browser print dialog for the current active tickets, including units, add-ons, customer details and order notes; it does not automatically send work to a printer.
+
+Status changes follow `new → preparing → ready → out_for_delivery → delivered` for delivery and `new → preparing → ready → delivered` for pickup. Cancellation requires a reason and is available before completion. Completed and cancelled orders cannot reopen. A comparison against the current status makes concurrent changes return a recoverable conflict instead of adding duplicate history entries. Repeating the current status succeeds without another history entry.
+
 ## Order behavior
 
 Storefront pages share clear headings, empty states, error recovery and sign-in links. Address saves report failures and block duplicate submissions. Item details preserve the selected branch when an item belongs to multiple branches; quantities are bounded to the API's 1–100 range. Order tracking distinguishes pickup, delivery and cancellation and displays only timestamps recorded by the API. The admin navigation collapses on small screens, and settings links lead to the existing operational editors.
