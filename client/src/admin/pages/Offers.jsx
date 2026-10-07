@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import OfferFormModal from '../components/offers/OfferFormModal.jsx';
 import { getOffers } from '../../services/offerService.js';
 import { getBranches } from '../../services/branchService.js';
-import api from '../../services/api.js';
+import { adminApi as api } from '../../services/api.js';
 
 const createOfferAdmin = (data) => api.post('/offers', data).then((r) => r.data);
 const updateOfferAdmin = (id, data) => api.put(`/offers/${id}`, data).then((r) => r.data);

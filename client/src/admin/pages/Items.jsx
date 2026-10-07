@@ -17,7 +17,7 @@ const Items = () => {
   const [error, setError] = useState(null);
 
   const loadItems = () => {
-    setLoading(true);
+    setLoading(true); setError(null);
     getItems({ branch: branchFilter || undefined, category: categoryFilter || undefined })
       .then((res) => setItems(res.data || [])).catch(() => setError('تعذر تحميل الأصناف')).finally(() => setLoading(false));
   };
@@ -32,7 +32,7 @@ const Items = () => {
     try {
       if (editingItem) await updateItem(editingItem._id, form); else await createItem(form);
       setModalOpen(false); setEditingItem(null); loadItems();
-    } catch { setError('تعذر حفظ الصنف'); }
+    } catch (err) { setError(err.response?.data?.message || 'تعذر حفظ الصنف'); throw err; }
   };
 
   return (
