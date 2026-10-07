@@ -122,6 +122,10 @@ The item editor supports an HTTPS image URL or a JPEG, PNG or WebP upload. Uploa
 
 Local development stores uploads in `server/uploads`, served through Vite's `/uploads` proxy. Vercel uploads require the three Cloudinary variables: the API will reject uploads when persistent storage is unavailable. An HTTPS image URL remains usable without Cloudinary. Cloudinary credentials stay on the server.
 
+## Storefront
+
+The homepage uses the existing Fasfoor identity with direct menu and branch navigation. Branch buttons select the branch before opening its menu. Navigation includes visible current-page and keyboard-focus states. Cart previews show item totals; delivery and discount calculations are reviewed during checkout. Offers are informational and use the existing telephone contact until an API-supported offer checkout is implemented.
+
 ## Order behavior
 
 - Prices, add-ons, delivery charges and discounts are calculated by the API, not accepted from the browser's total.
