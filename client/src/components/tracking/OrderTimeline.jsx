@@ -1,28 +1,29 @@
-const steps = [
-  { key: 'new', icon: '📋', label: 'تم استلام الطلب' },
-  { key: 'preparing', icon: '🍳', label: 'جاري التحضير' },
-  { key: 'ready', icon: '✅', label: 'جاهز للتسليم' },
-  { key: 'out_for_delivery', icon: '🛵', label: 'خرج للتوصيل' },
-  { key: 'delivered', icon: '🏠', label: 'وصل لك بالهنا' },
+const deliverySteps = [
+  { key: 'new', label: 'تم استلام الطلب' },
+  { key: 'preparing', label: 'جاري التحضير' },
+  { key: 'ready', label: 'جاهز للتسليم' },
+  { key: 'out_for_delivery', label: 'خرج للتوصيل' },
+  { key: 'delivered', label: 'تم التوصيل' },
 ];
 const OrderTimeline = ({ order }) => {
-  const currentIndex = steps.findIndex((s) => s.key === order.status);
+  if (order.status === 'cancelled') return <div className="tracking-cancelled" role="status"><strong>تم إلغاء الطلب</strong><p>{order.cancelReason || 'تواصل مع الفرع لو محتاج تستفسر عن تفاصيل الإلغاء.'}</p></div>;
+  const pickup = order.deliveryType === 'pickup';
+  const steps = deliverySteps.filter((step) => !pickup || step.key !== 'out_for_delivery');
+  const currentIndex = steps.findIndex((step) => step.key === order.status);
   return (
-    <div className="order-timeline">
-      {steps.map((step, i) => {
-        const historyEntry = order.statusHistory?.find((h) => h.status === step.key);
-        const isDone = i <= currentIndex;
+    <ol className="order-timeline" aria-label="مراحل الطلب">
+      {steps.map((step, index) => {
+        const historyEntry = order.statusHistory?.find((entry) => entry.status === step.key);
+        const timestamp = historyEntry?.at ? new Date(historyEntry.at) : null;
+        const label = pickup && step.key === 'delivered' ? 'تم الاستلام من الفرع' : step.label;
         return (
-          <div className={`timeline-step ${isDone ? 'done' : ''}`} key={step.key}>
-            <div className="timeline-icon">{step.icon}</div>
-            <div>
-              <strong>{step.label}</strong>
-              {historyEntry && <div className="timeline-time">{new Date(historyEntry.at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>}
-            </div>
-          </div>
+          <li className={`timeline-step ${index <= currentIndex ? 'done' : ''} ${index === currentIndex ? 'current' : ''}`} key={step.key} aria-current={index === currentIndex ? 'step' : undefined}>
+            <span className="timeline-icon" aria-hidden="true">{index < currentIndex ? '✓' : index + 1}</span>
+            <div><strong>{label}</strong>{timestamp && !Number.isNaN(timestamp.getTime()) && <time className="timeline-time" dateTime={timestamp.toISOString()}>{timestamp.toLocaleString('ar-EG', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</time>}</div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 };
 export default OrderTimeline;
