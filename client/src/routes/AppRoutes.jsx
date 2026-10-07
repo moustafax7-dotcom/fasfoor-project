@@ -14,6 +14,7 @@ import MyOrders from '../pages/MyOrders.jsx';
 import LoyaltyStatus from '../pages/LoyaltyStatus.jsx';
 import Favorites from '../pages/Favorites.jsx';
 import Addresses from '../pages/Addresses.jsx';
+import StatePanel from '../components/common/StatePanel.jsx';
 
 const AppRoutes = () => (
   <div className="storefront">
@@ -32,6 +33,7 @@ const AppRoutes = () => (
       <Route path="/account/addresses" element={<Addresses />} />
       <Route path="/track/:orderId" element={<OrderTracking />} />
       <Route path="/login" element={<Login />} />
+      <Route path="*" element={<main className="not-found-page"><StatePanel title="الصفحة دي مش موجودة" description="ممكن الرابط يكون اتغير. ارجع للرئيسية أو اختار صفحة من القائمة." to="/" actionLabel="العودة للرئيسية" /></main>} />
     </Routes>
     <Footer />
   </div>
