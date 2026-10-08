@@ -1,25 +1,30 @@
 import { useEffect, useState } from 'react';
 import { getZonesPublic } from '../../services/deliveryService.js';
 
-const ZoneSelector = ({ branchId, selectedZoneId, onSelect }) => {
+const ZoneSelector = ({ branchId, selectedZoneId, onSelect, onStatus }) => {
   const [zones, setZones] = useState([]);
+  const [error, setError] = useState(null);
+  const [revision, setRevision] = useState(0);
   useEffect(() => {
-    if (!branchId) return;
-    getZonesPublic(branchId).then((res) => {
-      const list = res.data || [];
-      setZones(list);
-      if (list.length && !selectedZoneId) onSelect(list[0]);
+    let active = true;
+    setZones([]); setError(null); onSelect(null); onStatus({ ready: false, required: false });
+    if (branchId) getZonesPublic(branchId).then((response) => {
+      if (!active) return;
+      const list = response.data || [];
+      setZones(list); onStatus({ ready: true, required: !!list.length });
+    }).catch(() => {
+      if (active) { setError('تعذر تحميل مناطق التوصيل. حدّثها قبل تأكيد الطلب.'); onStatus({ ready: false, required: false }); }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branchId]);
-
+    return () => { active = false; };
+  }, [branchId, revision, onSelect, onStatus]);
+  if (error) return <p className="form-error" role="alert">{error} <button className="link-btn" type="button" onClick={() => setRevision((value) => value + 1)}>إعادة المحاولة</button></p>;
   if (!zones.length) return null;
   return (
     <div className="zone-selector">
-      <label>منطقة التوصيل</label>
-      <p className="zone-selector-hint">اختار المنطقة الأقرب لعنوانك عشان نحسب رسوم التوصيل صح</p>
-      <select value={selectedZoneId || ''} onChange={(e) => onSelect(zones.find((z) => z._id === e.target.value))}>
-        {zones.map((z) => <option key={z._id} value={z._id}>{z.name} — {z.deliveryFee} جنيه</option>)}
+      <label htmlFor="checkout-zone">منطقة التوصيل</label>
+      <p className="zone-selector-hint">اختار المنطقة اللي فيها عنوانك علشان تظهر رسوم التوصيل الصحيحة.</p>
+      <select id="checkout-zone" required value={selectedZoneId || ''} onChange={(event) => onSelect(zones.find((zone) => zone._id === event.target.value) || null)}>
+        <option value="" disabled>اختار منطقة التوصيل</option>{zones.map((zone) => <option key={zone._id} value={zone._id}>{zone.name} — {zone.deliveryFee} جنيه</option>)}
       </select>
     </div>
   );
