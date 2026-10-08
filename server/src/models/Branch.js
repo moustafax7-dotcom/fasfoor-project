@@ -13,7 +13,7 @@ const branchSchema = new mongoose.Schema(
     location: { lat: Number, lng: Number },
     enabledCategories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
     estimatedDeliveryMinutes: { type: Number, default: 30 },
-    minimumOrderValue: { type: Number, default: 150 },
+    minimumOrderValue: { type: Number, default: 0, min: 0 },
     isOpen: { type: Boolean, default: true },
     image: { type: String },
   },
