@@ -262,3 +262,25 @@
 .order-notes { background:#faf1e3; padding:10px; font-size:12px; border-radius:8px; margin-bottom:12px; }
 button:disabled { cursor:not-allowed; opacity:.6; }
 @media (max-width:800px) { .category-editor-layout { grid-template-columns:1fr; } }
+.storefront .address-box textarea { width:100%; min-height:110px; margin-block:12px; padding:12px; border:1px solid #d5c3a8; border-radius:10px; background:white; color:#28241e; font:inherit; resize:vertical; }
+.storefront .checkout-hint { font-size:13px; line-height:1.9; color:#786d5b; margin-block:12px; }
+.storefront .item-action-error { color:#ffb8ad; font-size:12px; line-height:1.7; }
+.storefront .tracking-update { font-size:13px; color:#b8afa0; margin:-20px 0 24px; }
+.storefront .tracking-header-card { flex-wrap:wrap; gap:20px; }
+.storefront .tracking-header-card strong { overflow-wrap:anywhere; }
+.storefront .tracking-order-details { margin-top:24px; border:1px solid #51422e; border-radius:20px; padding:26px; background:#191a1b; }
+.storefront .tracking-order-details h2 { color:#e6bf7b; margin-bottom:18px; font-size:22px; }
+.storefront .tracking-order-details ul { list-style:none; padding:0; }
+.storefront .tracking-order-details li { display:flex; justify-content:space-between; gap:20px; padding-block:16px; border-bottom:1px solid #3a342a; }
+.storefront .tracking-order-details li > span { white-space:nowrap; color:#e6bf7b; }
+.storefront .tracking-order-details p { color:#c8c0b5; font-size:13px; line-height:1.9; margin-block:8px; overflow-wrap:anywhere; }
+.storefront .tracking-address { padding-top:18px; }
+.storefront .tracking-totals { margin-top:24px; }
+.storefront .tracking-totals > div { display:flex; justify-content:space-between; gap:16px; padding-block:8px; }
+.storefront .tracking-totals dd { margin:0; }
+.storefront .tracking-totals > div:last-child { font-weight:800; color:#e6bf7b; border-top:1px solid #51422e; margin-top:10px; padding-top:18px; }
+.storefront .rating-prompt { color:#28241e; background:#f5f0e7; }
+.storefront .rating-prompt h3 { color:#28241e; }
+.storefront .rating-stars button { font-size:32px; color:#918575; padding:4px; }
+.storefront .rating-stars .star-active { color:#a66b03; }
+@media (max-width:640px) { .storefront .tracking-order-details { padding:20px 18px; } .storefront .tracking-header-card { align-items:stretch; } }
