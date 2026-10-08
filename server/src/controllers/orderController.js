@@ -59,7 +59,8 @@ exports.createOrder = async (req, res, next) => {
     if (!selectedBranch || !selectedBranch.isOpen) {
       return res.status(400).json({ success: false, message: 'الفرع غير متاح لاستقبال الطلبات' });
     }
-    if (deliveryType === 'delivery' && (typeof req.body.deliveryAddress?.fullAddress !== 'string' || !req.body.deliveryAddress.fullAddress.trim())) {
+    if (req.body.notes != null && (typeof req.body.notes !== 'string' || req.body.notes.length > 250)) return res.status(400).json({ success: false, message: 'ملاحظات الطلب في حدود 250 حرفًا' });
+    if (deliveryType === 'delivery' && (typeof req.body.deliveryAddress?.fullAddress !== 'string' || !req.body.deliveryAddress.fullAddress.trim() || req.body.deliveryAddress.fullAddress.trim().length > 500)) {
       return res.status(400).json({ success: false, message: 'عنوان التوصيل مطلوب' });
     }
 
@@ -68,6 +69,7 @@ exports.createOrder = async (req, res, next) => {
       if (!requested || !mongoose.isValidObjectId(requested.item) || !Number.isSafeInteger(requested.quantity) || requested.quantity < 1 || requested.quantity > 100) {
         return res.status(400).json({ success: false, message: 'الصنف والكمية غير صالحين' });
       }
+      if (requested.notes != null && (typeof requested.notes !== 'string' || requested.notes.length > 250)) return res.status(400).json({ success: false, message: 'ملاحظات الصنف في حدود 250 حرفًا' });
       const item = await Item.findById(requested.item);
       if (!item || !item.isAvailable || !item.branches.some((b) => b.toString() === branch)) {
         return res.status(400).json({ success: false, message: `الصنف "${item?.name || requested.item}" غير متاح حاليًا` });
@@ -97,6 +99,7 @@ exports.createOrder = async (req, res, next) => {
         unit: requested.unit || 'piece',
         unitPrice: unitPrice + addOnsTotal,
         quantity,
+        notes: requested.notes?.trim() || undefined,
         addOns: matchedAddOns,
         subtotal: (unitPrice + addOnsTotal) * quantity,
       });
@@ -149,8 +152,8 @@ exports.createOrder = async (req, res, next) => {
       customer: req.customer._id,
       items: orderItems,
       deliveryType,
-      deliveryAddress: deliveryType === 'delivery' ? req.body.deliveryAddress : undefined,
-      notes: req.body.notes,
+      deliveryAddress: deliveryType === 'delivery' ? { fullAddress: req.body.deliveryAddress.fullAddress.trim() } : undefined,
+      notes: req.body.notes?.trim() || undefined,
       paymentMethod: 'cash',
       orderNumber,
       subtotal,

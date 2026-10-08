@@ -1,8 +1,12 @@
 const Review = require('../models/Review');
 const Order = require('../models/Order');
+const mongoose = require('mongoose');
 exports.createReview = async (req, res, next) => {
   try {
     const { orderId, rating, comment } = req.body;
+    if (!mongoose.isValidObjectId(orderId) || !Number.isInteger(rating) || rating < 1 || rating > 5 || (comment != null && (typeof comment !== 'string' || comment.length > 500))) {
+      return res.status(400).json({ success: false, message: 'اختار تقييم من 1 إلى 5، والتعليق في حدود 500 حرف' });
+    }
     const order = await Order.findById(orderId);
     if (!order) return res.status(404).json({ success: false, message: 'الطلب غير موجود' });
     if (order.customer.toString() !== req.customer._id.toString()) {
@@ -13,7 +17,7 @@ exports.createReview = async (req, res, next) => {
     }
     const existing = await Review.findOne({ order: orderId });
     if (existing) return res.status(400).json({ success: false, message: 'تم تقييم هذا الطلب من قبل' });
-    const review = await Review.create({ order: orderId, customer: req.customer._id, branch: order.branch, rating, comment });
+    const review = await Review.create({ order: orderId, customer: req.customer._id, branch: order.branch, rating, comment: comment?.trim() || undefined });
     res.status(201).json({ success: true, data: review });
   } catch (err) { next(err); }
 };

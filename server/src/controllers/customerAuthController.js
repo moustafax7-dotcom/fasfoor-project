@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const { addressFields, ensureDefaultAddress } = require('../services/addressFields');
 const Customer = require('../models/Customer');
 const { JWT_SECRET, JWT_EXPIRES_IN } = require('../config/env');
 const { generateOtp, sendOtp, isOtpDeliveryAvailable } = require('../services/otpService');
@@ -74,6 +76,7 @@ exports.verifyOtpCode = async (req, res, next) => {
     if (!customer || !customer.otpCode) {
       return res.status(400).json({ success: false, message: 'لم يتم إرسال كود تحقق لهذا الرقم' });
     }
+    if (!customer.isActive) return res.status(401).json({ success: false, message: 'الحساب غير مفعل' });
     if (customer.otpExpiresAt < new Date()) {
       return res.status(400).json({ success: false, message: 'انتهت صلاحية الكود، اطلب كود جديد' });
     }
@@ -128,10 +131,11 @@ exports.toggleFavorite = async (req, res, next) => {
 // ===== العناوين =====
 exports.addAddress = async (req, res, next) => {
   try {
+    const fields = addressFields(req.body);
+    if (fields.error) return res.status(400).json({ success: false, message: fields.error });
     const customer = await Customer.findById(req.customer._id);
-    const { label, fullAddress, city, lat, lng, isDefault } = req.body;
-    if (isDefault) customer.addresses.forEach((a) => { a.isDefault = false; });
-    customer.addresses.push({ label, fullAddress, city, lat, lng, isDefault: isDefault || customer.addresses.length === 0 });
+    customer.addresses.push(fields.data);
+    ensureDefaultAddress(customer.addresses, fields.data.isDefault ? customer.addresses[customer.addresses.length - 1]._id : undefined);
     await customer.save();
     res.status(201).json({ success: true, data: customer.addresses });
   } catch (err) { next(err); }
@@ -139,11 +143,14 @@ exports.addAddress = async (req, res, next) => {
 
 exports.updateAddress = async (req, res, next) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.addressId)) return res.status(400).json({ success: false, message: 'العنوان غير صالح' });
+    const fields = addressFields(req.body, true);
+    if (fields.error) return res.status(400).json({ success: false, message: fields.error });
     const customer = await Customer.findById(req.customer._id);
     const address = customer.addresses.id(req.params.addressId);
     if (!address) return res.status(404).json({ success: false, message: 'العنوان غير موجود' });
-    if (req.body.isDefault) customer.addresses.forEach((a) => { a.isDefault = false; });
-    Object.assign(address, req.body);
+    Object.assign(address, fields.data);
+    ensureDefaultAddress(customer.addresses, fields.data.isDefault ? address._id : undefined);
     await customer.save();
     res.json({ success: true, data: customer.addresses });
   } catch (err) { next(err); }
@@ -151,8 +158,11 @@ exports.updateAddress = async (req, res, next) => {
 
 exports.deleteAddress = async (req, res, next) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.addressId)) return res.status(400).json({ success: false, message: 'العنوان غير صالح' });
     const customer = await Customer.findById(req.customer._id);
+    if (!customer.addresses.some((address) => address._id.toString() === req.params.addressId)) return res.status(404).json({ success: false, message: 'العنوان غير موجود' });
     customer.addresses = customer.addresses.filter((a) => a._id.toString() !== req.params.addressId);
+    ensureDefaultAddress(customer.addresses);
     await customer.save();
     res.json({ success: true, data: customer.addresses });
   } catch (err) { next(err); }
