@@ -27,3 +27,11 @@ test('inactive administrators cannot sign in', async (t) => {
   await loginAdmin({ body: { username: 'inactive@example.test', password: 'synthetic' } }, res, (error) => { throw error; });
   assert.equal(res.statusCode, 401);
 });
+
+test('inactive customer accounts cannot use a valid customer token', async (t) => {
+  t.mock.method(Customer, 'findById', () => ({ select: async () => ({ isActive: false }) }));
+  const token = jwt.sign({ id: 'synthetic', type: 'customer' }, process.env.JWT_SECRET);
+  const res = response();
+  await protectCustomer({ headers: { authorization: `Bearer ${token}` } }, res, () => { throw new Error('Must not authorize'); });
+  assert.equal(res.statusCode, 401);
+});
