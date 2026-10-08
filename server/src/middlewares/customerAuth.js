@@ -13,7 +13,7 @@ const protectCustomer = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'توكن العميل مطلوب' });
     }
     const customer = await Customer.findById(decoded.id).select('-password');
-    if (!customer) return res.status(401).json({ success: false, message: 'المستخدم غير موجود' });
+    if (!customer || !customer.isActive) return res.status(401).json({ success: false, message: 'المستخدم غير موجود أو غير مفعل' });
     req.customer = customer;
     next();
   } catch (err) {
