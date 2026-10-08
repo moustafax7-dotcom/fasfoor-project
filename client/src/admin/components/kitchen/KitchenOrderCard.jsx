@@ -24,7 +24,7 @@ const KitchenOrderCard = ({ order, onAdvance }) => {
       <div className="kitchen-order-top"><span className="kitchen-timer">⏱ {elapsed}</span><span className="kitchen-order-id">#{order.orderNumber}</span></div>
       <div className="kitchen-order-customer"><span>{order.customer?.name || 'عميل'}</span><span>👤</span></div>
       <span className="kitchen-branch-pill">📍 {order.branch?.name}</span>
-      <ul className="kitchen-items">{order.items?.map((it, i) => <li key={i}>{it.quantity} × {it.name} · {unitLabels[it.unit] || it.unit}{!!it.addOns?.length && <small>الإضافات: {it.addOns.map((addon) => addon.name).join("، ")}</small>}</li>)}</ul>
+      <ul className="kitchen-items">{order.items?.map((it, i) => <li key={i}>{it.quantity} × {it.name} · {unitLabels[it.unit] || it.unit}{!!it.addOns?.length && <small>الإضافات: {it.addOns.map((addon) => addon.name).join("، ")}</small>}{it.notes && <small>ملاحظات الصنف: {it.notes}</small>}</li>)}</ul>
       <p className="kitchen-delivery-type">{order.deliveryType === "pickup" ? "استلام من الفرع" : "توصيل"}</p>
       {order.notes && <p className="kitchen-order-notes">ملاحظات: {order.notes}</p>}
       <div className="kitchen-order-time">الوقت: {new Date(order.createdAt).toLocaleDateString('ar-EG', { month: '2-digit', day: '2-digit' })} {new Date(order.createdAt).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>
