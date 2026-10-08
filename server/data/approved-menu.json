@@ -1,0 +1,534 @@
+{
+  "schemaVersion": 1,
+  "currency": "EGP",
+  "priceApproval": {
+    "status": "approved_by_owner",
+    "date": "2026-10-08",
+    "source": "fosfor_menu_review.md"
+  },
+  "publicationStatus": "pending_branch_setup",
+  "requiredBeforeImport": [
+    "Confirmed branch addresses, phone numbers and hours",
+    "Active administrator for recording price approval",
+    "Map each named offering to its sale unit; do not derive unlisted weight variants",
+    "Approved product photos or existing brand placeholder"
+  ],
+  "branches": [
+    {
+      "name": "مدينة نصر",
+      "minimumOrderValue": 0,
+      "items": [
+        {
+          "category": "العروض",
+          "name": "بوكس تبأ للأكس (طلبان)",
+          "priceEGP": 385,
+          "sourceNote": "رنجة وبطارخ وصوص وعيش؛ يكفي فردين"
+        },
+        {
+          "category": "العروض",
+          "name": "بوكس سنجل وافتخر",
+          "priceEGP": 199,
+          "sourceNote": "ساندوتش جمبري + ساندوتش فيليه"
+        },
+        {
+          "category": "العروض",
+          "name": "صينية المزاج",
+          "priceEGP": 1200,
+          "sourceNote": "جمبري بترفلاي ومشوي + بلطي + أرز وسلطات"
+        },
+        {
+          "category": "العروض",
+          "name": "وجبة بوري سنجاري مشوي",
+          "priceEGP": 350,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "العروض",
+          "name": "وجبة بوري مقلي",
+          "priceEGP": 350,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الصواني",
+          "name": "كيلو سبيط بلدي مقلي",
+          "priceEGP": 1690,
+          "sourceNote": "مع أرز صيادية وسلطات هدية عند طلب الكيلو"
+        },
+        {
+          "category": "الصواني",
+          "name": "كيلو جمبري وسط قزاز مقشر",
+          "priceEGP": 1690,
+          "sourceNote": "الوزن بعد القلي بحسب الوصف"
+        },
+        {
+          "category": "الصواني",
+          "name": "كيلو سمك فيليه مقلي",
+          "priceEGP": 780,
+          "sourceNote": "مع أرز صيادية وسلطات هدية عند طلب الكيلو"
+        },
+        {
+          "category": "الصواني",
+          "name": "كيلو جمبري جامبو بترفلاي",
+          "priceEGP": 1950,
+          "sourceNote": "مع الإضافات المذكورة بالموقع"
+        },
+        {
+          "category": "الصواني",
+          "name": "كيلو جمبري جامبو مقلي",
+          "priceEGP": 1950,
+          "sourceNote": "مع الإضافات المذكورة بالموقع"
+        },
+        {
+          "category": "الصواني",
+          "name": "صينية الفورسيزون",
+          "priceEGP": 1830,
+          "sourceNote": "خليط جمبري وفيليه وأرز وسلطات"
+        },
+        {
+          "category": "الصواني",
+          "name": "كيلو جمبري جامبو مشوي",
+          "priceEGP": 1950,
+          "sourceNote": "مع أرز وسلطات وطحينة وعيش"
+        },
+        {
+          "category": "الصواني",
+          "name": "صينية فسفور عالي",
+          "priceEGP": 4995,
+          "sourceNote": "صينية كبيرة متعددة المكونات"
+        },
+        {
+          "category": "الصواني",
+          "name": "صينية VIP",
+          "priceEGP": 1900,
+          "sourceNote": "تكفي 3–4 أشخاص حسب الوصف"
+        },
+        {
+          "category": "الصواني",
+          "name": "صينية كيس حراري",
+          "priceEGP": 1135,
+          "sourceNote": "جمبري وكاليماري وبلح بحر وكابوريا"
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة فسفور عالي كريمة",
+          "priceEGP": 310,
+          "sourceNote": "جمبري وسبيط وفيليه وكابوريا"
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة فسفور عالي",
+          "priceEGP": 310,
+          "sourceNote": "جمبري وسبيط وفيليه وكابوريا"
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة فسفور عالي حمراء بدون كريمة",
+          "priceEGP": 310,
+          "sourceNote": "جمبري وسبيط وفيليه وكابوريا"
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة جمبري بيزك بالبطارخ",
+          "priceEGP": 150,
+          "sourceNote": ""
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة ربع جمبري وسط بالبطارخ",
+          "priceEGP": 460,
+          "sourceNote": ""
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة ربع جمبري جامبو بالبطارخ",
+          "priceEGP": 490,
+          "sourceNote": ""
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة استكانة بالمكونات",
+          "priceEGP": 150,
+          "sourceNote": ""
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة استكانة حمراء بالمكونات",
+          "priceEGP": 150,
+          "sourceNote": ""
+        },
+        {
+          "category": "الشوربة",
+          "name": "شوربة ربع جندوفلي بالبطارخ",
+          "priceEGP": 220,
+          "sourceNote": ""
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة ربع فيليه مشوي",
+          "priceEGP": 260,
+          "sourceNote": "أرز وسلطة وطحينة وعيش"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة ربع مشكل مقلي",
+          "priceEGP": 495,
+          "sourceNote": "فيليه وجمبري وسبيط مع الإضافات"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سبيط بلدي",
+          "priceEGP": 255,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سمك فيليه",
+          "priceEGP": 265,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة ميكس فسفور",
+          "priceEGP": 490,
+          "sourceNote": "جمبري وسط وفيليه وجامبو مشوي"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سمك بلطي مقلي",
+          "priceEGP": 240,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سمك بلطي زيت وليمون",
+          "priceEGP": 240,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سمك بوري مقلي",
+          "priceEGP": 350,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سمك بوري زيت وليمون",
+          "priceEGP": 350,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سمك دينيس مقلي",
+          "priceEGP": 565,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة سمك دينيس زيت وليمون",
+          "priceEGP": 565,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة جمبري جامبو مشوي",
+          "priceEGP": 550,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة جمبري جامبو بترفلاي",
+          "priceEGP": 550,
+          "sourceNote": "أرز صيادية وسلطة وطحينة"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة جمبري جامبو مقلي",
+          "priceEGP": 550,
+          "sourceNote": "ربع كيلو بحسب الوصف"
+        },
+        {
+          "category": "الوجبات",
+          "name": "وجبة الرايق",
+          "priceEGP": 650,
+          "sourceNote": "كابوريا وجامبو وفيليه مع أرز وإضافات"
+        },
+        {
+          "category": "الوجبات",
+          "name": "استاكوزا بالقشطة",
+          "priceEGP": 1800,
+          "sourceNote": "عرض محدود ظاهر بالموقع؛ يحتاج تأكيد قبل النشر"
+        },
+        {
+          "category": "الطواجن",
+          "name": "طاجن جمبري وسط بدون قشر وايت صوص",
+          "priceEGP": 490,
+          "sourceNote": ""
+        },
+        {
+          "category": "الطواجن",
+          "name": "طاجن جمبري وسط بدون قشر ريد صوص",
+          "priceEGP": 490,
+          "sourceNote": ""
+        },
+        {
+          "category": "الطواجن",
+          "name": "طاجن جمبري جامبو بالقشر",
+          "priceEGP": 515,
+          "sourceNote": "صوص بحاجة إلى تأكيد من الإدارة"
+        },
+        {
+          "category": "الطواجن",
+          "name": "طاجن فياجرا ريد صوص",
+          "priceEGP": 490,
+          "sourceNote": "جمبري وسبيط وفيليه وكابوريا"
+        },
+        {
+          "category": "الطواجن",
+          "name": "طاجن فياجرا وايت صوص",
+          "priceEGP": 490,
+          "sourceNote": "جمبري وسبيط وفيليه وكابوريا"
+        },
+        {
+          "category": "الطواجن",
+          "name": "طاجن الديناميت",
+          "priceEGP": 620,
+          "sourceNote": "بطارخ بوري وكاليماري وفيليه وجمبري وكابوريا"
+        },
+        {
+          "category": "الباستا",
+          "name": "باستا صوص أبيض بالجمبري",
+          "priceEGP": 260,
+          "sourceNote": "جمبري وسط مخلي بحسب الوصف"
+        },
+        {
+          "category": "الباستا",
+          "name": "باستا صوص أحمر بالجمبري",
+          "priceEGP": 260,
+          "sourceNote": "جمبري وسط مخلي بحسب الوصف"
+        },
+        {
+          "category": "الباستا",
+          "name": "باستا صوص بينك بالجمبري",
+          "priceEGP": 280,
+          "sourceNote": "جمبري وسط مخلي بحسب الوصف"
+        },
+        {
+          "category": "الباستا",
+          "name": "طاجن فخار باستا صوص أحمر بالجمبري",
+          "priceEGP": 345,
+          "sourceNote": ""
+        },
+        {
+          "category": "الباستا",
+          "name": "طاجن فخار باستا صوص أبيض بالجمبري",
+          "priceEGP": 345,
+          "sourceNote": ""
+        },
+        {
+          "category": "البوكسات",
+          "name": "بوكس حلاوة البدايات",
+          "priceEGP": 230,
+          "sourceNote": "جمبري وسبيط فرنساوي وطحينة"
+        },
+        {
+          "category": "البوكسات",
+          "name": "بوكس النشاط",
+          "priceEGP": 600,
+          "sourceNote": "3 ساندوتش جمبري + 3 ساندوتش فيليه"
+        },
+        {
+          "category": "البوكسات",
+          "name": "الهانشي منشي",
+          "priceEGP": 350,
+          "sourceNote": "3 ساندوتشات بحرية بحسب الوصف"
+        },
+        {
+          "category": "الساندويتش",
+          "name": "ساندوتش سمك فيليه",
+          "priceEGP": 90,
+          "sourceNote": ""
+        },
+        {
+          "category": "الساندويتش",
+          "name": "ساندوتش جمبري وسط",
+          "priceEGP": 110,
+          "sourceNote": ""
+        },
+        {
+          "category": "الساندويتش",
+          "name": "ساندوتش فياجرا",
+          "priceEGP": 125,
+          "sourceNote": "جمبري وفيليه وسبيط"
+        },
+        {
+          "category": "الساندويتش",
+          "name": "ساندوتش فياجرا فرنساوي وسط",
+          "priceEGP": 135,
+          "sourceNote": ""
+        },
+        {
+          "category": "الساندويتش",
+          "name": "ساندوتش جمبري وسط فرنساوي",
+          "priceEGP": 120,
+          "sourceNote": ""
+        },
+        {
+          "category": "الساندويتش",
+          "name": "ساندوتش سبيط بلدي فرنساوي",
+          "priceEGP": 120,
+          "sourceNote": ""
+        },
+        {
+          "category": "الرنجة",
+          "name": "ربع رنجة مدخنة هولندي",
+          "priceEGP": 330,
+          "sourceNote": ""
+        },
+        {
+          "category": "الرنجة",
+          "name": "طبق تونة فاتح ياباني",
+          "priceEGP": 235,
+          "sourceNote": ""
+        },
+        {
+          "category": "المقبلات",
+          "name": "سلطة خضراء",
+          "priceEGP": 35,
+          "sourceNote": ""
+        },
+        {
+          "category": "المقبلات",
+          "name": "سلطة طحينة",
+          "priceEGP": 40,
+          "sourceNote": ""
+        },
+        {
+          "category": "المقبلات",
+          "name": "طماطم متبلة",
+          "priceEGP": 40,
+          "sourceNote": ""
+        },
+        {
+          "category": "المقبلات",
+          "name": "بطاطس مقلية",
+          "priceEGP": 50,
+          "sourceNote": ""
+        },
+        {
+          "category": "المقبلات",
+          "name": "بابا غنوج",
+          "priceEGP": 45,
+          "sourceNote": ""
+        },
+        {
+          "category": "المقبلات",
+          "name": "أرز بسمتي أبيض",
+          "priceEGP": 60,
+          "sourceNote": ""
+        },
+        {
+          "category": "المقبلات",
+          "name": "أرز صيادية",
+          "priceEGP": 65,
+          "sourceNote": ""
+        }
+      ]
+    },
+    {
+      "name": "الجبل الأصفر",
+      "minimumOrderValue": 0,
+      "items": [
+        {
+          "category": "صواني",
+          "name": "صينية كيلو جمبري بترفلاي",
+          "priceEGP": 1450,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية كيلو جمبري مشوي",
+          "priceEGP": 1450,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية كيلو جمبري جامبو مقلي",
+          "priceEGP": 1450,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية كيلو جمبري وسط مقلي",
+          "priceEGP": 1250,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية كيلو سمك فيليه مقلي",
+          "priceEGP": 650,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية كيلو كبدة بالردة مقلي",
+          "priceEGP": 520,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية السعادة مقلي",
+          "priceEGP": 1100,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية ميكس السعادة مقلي ومشوي",
+          "priceEGP": 1300,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "صواني",
+          "name": "صينية الليل",
+          "priceEGP": 1800,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "شاورما",
+          "name": "فتة شاورما فراخ",
+          "priceEGP": 180,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "شاورما",
+          "name": "فتة شاورما لحمة",
+          "priceEGP": 195,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "أكل شرقي",
+          "name": "مكرونة ريد صوص بالكبدة",
+          "priceEGP": 350,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "أكل شرقي",
+          "name": "مكرونة ريد صوص بالسجق",
+          "priceEGP": 385,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "أكل شرقي",
+          "name": "حواوشي لحمة سادة",
+          "priceEGP": 285,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        },
+        {
+          "category": "طواجن شرقي",
+          "name": "طاجن ورق عنب بالكوارع",
+          "priceEGP": 385,
+          "sourceNote": "مقروء بوضوح من صورة المنيو"
+        }
+      ]
+    }
+  ]
+}
