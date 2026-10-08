@@ -40,6 +40,16 @@ test('pickup ignores supplied delivery zone and client totals', async (t) => {
   assert.equal(created[0].deliveryAddress, undefined);
 });
 
+test('a branch with no minimum accepts a small valid order', async (t) => {
+  fixtures(t);
+  t.mock.method(Branch, 'findById', async () => ({ isOpen: true, minimumOrderValue: 0 }));
+  t.mock.method(Item, 'findById', async () => ({ _id: itemId, name: 'Salad', price: 35, branches: [branchId], isAvailable: true, addOns: [] }));
+  const result = await submit({});
+  assert.equal(result.statusCode, 201);
+  assert.equal(result.body.data.total, 35);
+  assert.equal(new Branch().minimumOrderValue, 0);
+});
+
 test('delivery uses the active zone fee and requires an address', async (t) => {
   fixtures(t);
   const zoneId = new mongoose.Types.ObjectId().toString();

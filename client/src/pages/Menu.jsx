@@ -65,7 +65,7 @@ const Menu = () => {
           {error && <StatePanel error title={error} onRetry={() => window.location.reload()} />}
           {!!branches.length && !loading && !error && <MenuGrid items={items} branchOpen={currentBranch?.isOpen !== false} />}
         </section>
-        <CartSidebar branchOpen={currentBranch?.isOpen !== false} minimumOrderValue={currentBranch?.minimumOrderValue ?? 150} />
+        <CartSidebar branchOpen={currentBranch?.isOpen !== false} minimumOrderValue={currentBranch?.minimumOrderValue ?? 0} />
       </div>
     </main>
   );

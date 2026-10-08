@@ -41,7 +41,7 @@ const Cart = () => {
     return () => { active = false; };
   }, [branchId, branchRevision]);
 
-  const minimumOrderValue = branch?.minimumOrderValue ?? 150;
+  const minimumOrderValue = branch?.minimumOrderValue ?? 0;
   const meetsMinimumOrder = subtotal >= minimumOrderValue;
   const amountToReachMinimum = Math.max(0, minimumOrderValue - subtotal);
   const deliveryFee = deliveryType === 'pickup' ? 0 : (selectedZone?.deliveryFee ?? 15);

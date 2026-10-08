@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useMemo, useRef, useEffect } from 
 import { appendCartLine, cartKey, emptyCart, readCart, validateCart, writeCart } from '../services/cartState.js';
 
 const CartContext = createContext();
-const MINIMUM_ORDER_VALUE = 150;
+const MINIMUM_ORDER_VALUE = 0;
 const getStorage = () => { try { return globalThis.localStorage; } catch { return null; } };
 
 export const CartProvider = ({ children }) => {

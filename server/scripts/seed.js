@@ -78,14 +78,14 @@ async function seed() {
     name: 'فرع مدينة نصر', city: 'القاهرة',
     address: 'أول عباس العقاد، مدينة نصر، ناصية KFC', phone: '01558088058',
     workingHours: { from: '12:00 م', to: '1:00 ص' },
-    estimatedDeliveryMinutes: 25, minimumOrderValue: 150, isOpen: true,
+    estimatedDeliveryMinutes: 25, minimumOrderValue: 0, isOpen: true,
   });
 
   const yellowMountain = await Branch.create({
     name: 'فرع الجبل الأصفر', city: 'القاهرة',
     address: 'الجبل الأصفر، القاهرة', phone: '01098765432',
     workingHours: { from: '12:00 م', to: '1:00 ص' },
-    estimatedDeliveryMinutes: 15, minimumOrderValue: 150, isOpen: true,
+    estimatedDeliveryMinutes: 15, minimumOrderValue: 0, isOpen: true,
   });
   console.log('اتعمل فرعين: مدينة نصر + الجبل الأصفر');
 
