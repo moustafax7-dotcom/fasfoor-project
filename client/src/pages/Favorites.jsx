@@ -6,7 +6,7 @@ import { useCustomerAuth } from '../context/CustomerAuthContext.jsx';
 
 const Favorites = () => {
   const { isAuthenticated } = useCustomerAuth();
-  const { favoriteItems } = useFavorites();
+  const { favoriteItems, loading, error, refresh } = useFavorites();
 
   if (!isAuthenticated) {
     return (
@@ -19,7 +19,9 @@ const Favorites = () => {
   return (
     <main className="favorites-page">
       <PageIntro title="المفضلة" description="اختياراتك المفضلة، جاهزة ترجع لها في أي وقت." />
-      {!favoriteItems.length ? (
+      {loading && <p className="page-loading" role="status">جاري تحميل المفضلة…</p>}
+      {error && <StatePanel error title={error} onRetry={refresh} />}
+      {!loading && !error && !favoriteItems.length ? (
         <StatePanel title="المفضلة لسه فاضية" description="اضغط علامة القلب على أي صنف في المنيو علشان يتحفظ هنا." to="/menu" />
       ) : (
         <div className="items-grid">{favoriteItems.map((item) => <MenuItemCard key={item._id} item={item} />)}</div>
