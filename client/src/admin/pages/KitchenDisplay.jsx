@@ -36,7 +36,7 @@ const KitchenDisplay = () => {
         <article className="kitchen-ticket" key={order._id}>
           <h2>فسفور · طلب #{order.orderNumber}</h2><p>{order.branch?.name} · {order.deliveryType === 'pickup' ? 'استلام من الفرع' : 'توصيل'}</p>
           <p>{new Date(order.createdAt).toLocaleString('ar-EG')}</p><p>{order.customer?.name} {order.customer?.phone}</p>
-          <ul>{order.items?.map((item, index) => <li key={index}><strong>{item.quantity} × {item.name}</strong> · {unitLabels[item.unit] || item.unit}{!!item.addOns?.length && <p>الإضافات: {item.addOns.map((addon) => addon.name).join('، ')}</p>}</li>)}</ul>
+          <ul>{order.items?.map((item, index) => <li key={index}><strong>{item.quantity} × {item.name}</strong> · {unitLabels[item.unit] || item.unit}{!!item.addOns?.length && <p>الإضافات: {item.addOns.map((addon) => addon.name).join('، ')}</p>}{item.notes && <p>ملاحظات الصنف: {item.notes}</p>}</li>)}</ul>
           {order.notes && <p><strong>ملاحظات: </strong>{order.notes}</p>}{order.deliveryType === 'delivery' && <p><strong>العنوان: </strong>{order.deliveryAddress?.fullAddress}</p>}<p>الإجمالي: {order.total} جنيه · الدفع عند الاستلام</p>
         </article>
       ))}</section>
