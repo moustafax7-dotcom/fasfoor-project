@@ -12,7 +12,7 @@ const unitLabels = { quarter: 'ربع كيلو', half: 'نص كيلو', kilo: '�
 const ItemDetail = () => {
   const { itemId } = useParams();
   const navigate = useNavigate();
-  const { addItem, branchId } = useCart();
+  const { addItem, branchId, cartError } = useCart();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -81,6 +81,7 @@ const ItemDetail = () => {
             <div><span className="detail-price-label">السعر</span><strong className="detail-price">{totalPrice} جنيه</strong></div>
             <QuantityStepper quantity={quantity} onChange={setQuantity} />
           </div>
+          {cartError && <p className="form-error" role="alert">{cartError}</p>}
           <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={!item.isAvailable}>
             {added ? '✓ تمت الإضافة للسلة' : item.isAvailable ? 'أضف للسلة' : 'غير متاح حاليًا'}
           </button>

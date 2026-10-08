@@ -7,6 +7,7 @@ const orderItemSchema = new mongoose.Schema(
     unit: String,
     unitPrice: { type: Number, required: true },
     quantity: { type: Number, required: true, default: 1 },
+    notes: { type: String, maxlength: 250 },
     addOns: [{ name: String, price: Number }],
     subtotal: { type: Number, required: true },
   },

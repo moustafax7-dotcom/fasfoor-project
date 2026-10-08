@@ -50,6 +50,27 @@ test('delivery uses the active zone fee and requires an address', async (t) => {
   assert.equal((await submit({ deliveryType: 'delivery', deliveryAddress: { fullAddress: 123 } })).statusCode, 400);
 });
 
+test('line notes and order notes survive checkout while delivery addresses only preserve their permitted fields', async (t) => {
+  const created = fixtures(t);
+  const result = await submit({ items: [{ item: itemId, quantity: 1, notes: ' No salt ' }], notes: ' Call first ', deliveryType: 'delivery', deliveryAddress: { fullAddress: ' Test street ', unknown: 'ignored' } });
+  assert.equal(result.statusCode, 201);
+  assert.equal(created[0].items[0].notes, 'No salt');
+  assert.equal(created[0].notes, 'Call first');
+  assert.deepEqual(created[0].deliveryAddress, { fullAddress: 'Test street' });
+  const document = new Order(created[0]);
+  assert.equal(document.items[0].notes, 'No salt');
+});
+
+test('malformed or excessive order notes, line notes and delivery addresses never create an order', async (t) => {
+  const created = fixtures(t);
+  for (const notes of [{ unsafe: true }, 'x'.repeat(251)]) {
+    assert.equal((await submit({ notes })).statusCode, 400);
+    assert.equal((await submit({ items: [{ item: itemId, quantity: 1, notes }] })).statusCode, 400);
+  }
+  for (const fullAddress of [' ', 'x'.repeat(501)]) assert.equal((await submit({ deliveryType: 'delivery', deliveryAddress: { fullAddress } })).statusCode, 400);
+  assert.equal(created.length, 0);
+});
+
 test('invalid zones, closed branches and minimum order failures do not create orders', async (t) => {
   const created = fixtures(t);
   t.mock.method(DeliveryZone, 'findOne', async () => null);

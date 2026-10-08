@@ -6,15 +6,17 @@ import { useCustomerAuth } from '../context/CustomerAuthContext.jsx';
 import { getMyProfile } from '../services/customerAuthService.js';
 
 const MyOrders = () => {
-  const { isAuthenticated } = useCustomerAuth();
+  const { isAuthenticated, customer } = useCustomerAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!isAuthenticated) { setLoading(false); return; }
-    getMyProfile().then((res) => setOrders(res.data.orders || [])).catch(() => setError('تعذر تحميل الطلبات')).finally(() => setLoading(false));
-  }, [isAuthenticated]);
+    if (!isAuthenticated) { setOrders([]); setLoading(false); return; }
+    let active = true; setOrders([]); setLoading(true); setError(null);
+    getMyProfile().then((res) => { if (active) setOrders(res.data.orders || []); }).catch(() => { if (active) setError('تعذر تحميل الطلبات'); }).finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [isAuthenticated, customer?.id]);
 
   if (!isAuthenticated) return <main className="my-orders-page"><PageIntro title="طلباتي" /><StatePanel title="طلباتك محفوظة في حسابك" description="سجّل دخولك لمتابعة حالة طلبك وعرض الطلبات السابقة." to="/login" actionLabel="تسجيل الدخول" /></main>;
 

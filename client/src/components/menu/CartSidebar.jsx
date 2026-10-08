@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext.jsx';
 
 const CartSidebar = ({ branchOpen = true, minimumOrderValue = 150 }) => {
-  const { items, updateQuantity, removeItem, subtotal, cartKey } = useCart();
+  const { items, updateQuantity, removeItem, subtotal, cartKey, cartError } = useCart();
   const navigate = useNavigate();
   const meetsMinimumOrder = subtotal >= minimumOrderValue;
   const amountToReachMinimum = Math.max(0, minimumOrderValue - subtotal);
@@ -11,6 +11,7 @@ const CartSidebar = ({ branchOpen = true, minimumOrderValue = 150 }) => {
   return (
     <aside className="cart-sidebar">
       <h3>سلة الطلب</h3>
+      {cartError && <p className="form-error" role="alert">{cartError}</p>}
       {!items.length && <p className="cart-empty">السلة فارغة، ابدأ بإضافة أصناف</p>}
       <div className="cart-sidebar-items">
         {items.map((i) => (
@@ -19,13 +20,13 @@ const CartSidebar = ({ branchOpen = true, minimumOrderValue = 150 }) => {
             <div className="cart-sidebar-item-info">
               <span>{i.name}</span>
               <div className="qty-stepper">
-                <button onClick={() => updateQuantity(i.itemId, i.unit, i.quantity - 1, i.addOns)}>−</button>
+                <button aria-label="تقليل الكمية" onClick={() => updateQuantity(i.itemId, i.unit, i.quantity - 1, i.addOns, i.notes)}>−</button>
                 <span>{i.quantity}</span>
-                <button onClick={() => updateQuantity(i.itemId, i.unit, i.quantity + 1, i.addOns)}>+</button>
+                <button disabled={i.quantity >= 100} aria-label="زيادة الكمية" onClick={() => updateQuantity(i.itemId, i.unit, i.quantity + 1, i.addOns, i.notes)}>+</button>
               </div>
             </div>
             <span className="cart-sidebar-item-price">{i.unitPrice * i.quantity} جنيه</span>
-            <button className="remove-btn" onClick={() => removeItem(i.itemId, i.unit, i.addOns)}>🗑</button>
+            <button aria-label="حذف الصنف من السلة" className="remove-btn" onClick={() => removeItem(i.itemId, i.unit, i.addOns, i.notes)}>🗑</button>
           </div>
         ))}
       </div>

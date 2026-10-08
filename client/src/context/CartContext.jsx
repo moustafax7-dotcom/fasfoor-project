@@ -1,71 +1,53 @@
-import { createContext, useContext, useState, useMemo } from 'react';
+import { createContext, useContext, useState, useMemo, useRef, useEffect } from 'react';
+import { appendCartLine, cartKey, emptyCart, readCart, validateCart, writeCart } from '../services/cartState.js';
 
 const CartContext = createContext();
-const MINIMUM_ORDER_VALUE = 150; // حد أدنى لقيمة الطلب - يحمي المطعم من طلبات غير مربحة
-
-const cartKey = (i) => `${i.itemId}-${i.unit}-${[...(i.addOns || [])].sort().join(',')}`;
+const MINIMUM_ORDER_VALUE = 150;
+const getStorage = () => { try { return globalThis.localStorage; } catch { return null; } };
 
 export const CartProvider = ({ children }) => {
-  const [items, setItems] = useState([]);
-  const [branchId, setBranchId] = useState(null);
+  const [cart, setCart] = useState(() => readCart(getStorage()));
+  const [cartError, setCartError] = useState(null);
+  const currentCart = useRef(cart);
+  useEffect(() => { writeCart(getStorage(), cart); }, [cart]);
+  const commit = (next) => { currentCart.current = next; setCart(next); setCartError(null); };
 
-  // تغيير الفرع يدويًا - لو السلة فيها أصناف من فرع تاني، لازم نصفّرها
-  const switchBranch = (newBranchId) => {
-    if (items.length && newBranchId !== branchId) {
-      const confirmSwitch = window.confirm('سلتك فيها أصناف من فرع تاني. تغيير الفرع هيفضي السلة الحالية. تكمل؟');
-      if (!confirmSwitch) return false;
-      setItems([]);
-    }
-    setBranchId(newBranchId);
-    return true;
+  const switchBranch = (branchId) => {
+    const current = currentCart.current;
+    if (current.items.length && branchId !== current.branchId && !window.confirm('سلتك فيها أصناف من فرع تاني. تغيير الفرع هيفضي السلة الحالية. تكمل؟')) return false;
+    try { commit(validateCart({ branchId, items: branchId === current.branchId ? current.items : [] })); return true; }
+    catch (error) { setCartError(error.message); return false; }
   };
-
-  // إضافة صنف: منع خلط أصناف من فرعين مختلفين في نفس الطلب
   const addItem = (item) => {
-    if (branchId && item.branchId && item.branchId !== branchId && items.length) {
-      const confirmSwitch = window.confirm('مينفعش تخلط أصناف من فرعين مختلفين في نفس الطلب. تفضي السلة الحالية وتضيف الصنف الجديد؟');
-      if (!confirmSwitch) return false;
-      setItems([{ ...item }]);
-      setBranchId(item.branchId);
-      return true;
-    }
-    if (item.branchId && !branchId) setBranchId(item.branchId);
-
-    setItems((prev) => {
-      const key = cartKey(item);
-      const existing = prev.find((i) => cartKey(i) === key);
-      if (existing) return prev.map((i) => (cartKey(i) === key ? { ...i, quantity: i.quantity + item.quantity } : i));
-      return [...prev, item];
-    });
-    return true;
+    const current = currentCart.current;
+    const switching = current.branchId !== item.branchId;
+    if (switching && current.items.length && !window.confirm('الصنف من فرع تاني. تفضي السلة الحالية وتضيفه؟')) return false;
+    try { commit({ branchId: item.branchId, items: appendCartLine(switching ? [] : current.items, item) }); return true; }
+    catch (error) { setCartError(error.message); return false; }
   };
-
-  const updateQuantity = (itemId, unit, quantity, addOns = []) => {
-    const key = cartKey({ itemId, unit, addOns });
-    setItems((prev) =>
-      quantity <= 0 ? prev.filter((i) => cartKey(i) !== key) : prev.map((i) => (cartKey(i) === key ? { ...i, quantity } : i))
-    );
+  const replaceCart = (next) => {
+    try { commit(validateCart(next)); return true; }
+    catch (error) { setCartError(error.message); return false; }
   };
-
-  const removeItem = (itemId, unit, addOns = []) => {
-    const key = cartKey({ itemId, unit, addOns });
-    setItems((prev) => prev.filter((i) => cartKey(i) !== key));
+  const updateQuantity = (itemId, unit, quantity, addOns = [], notes = '') => {
+    const current = currentCart.current;
+    if (!Number.isSafeInteger(quantity) || quantity > 100) { setCartError('أقصى كمية لنفس اختيار الصنف هي 100'); return; }
+    const key = cartKey({ itemId, unit, addOns, notes });
+    commit({ ...current, items: quantity <= 0 ? current.items.filter((item) => cartKey(item) !== key) : current.items.map((item) => cartKey(item) === key ? { ...item, quantity } : item) });
   };
-
-  const clearCart = () => { setItems([]); setBranchId(null); };
-
-  const subtotal = useMemo(() => items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0), [items]);
-  const meetsMinimumOrder = subtotal >= MINIMUM_ORDER_VALUE || items.length === 0;
-  const amountToReachMinimum = Math.max(0, MINIMUM_ORDER_VALUE - subtotal);
-
+  const removeItem = (itemId, unit, addOns = [], notes = '') => {
+    const current = currentCart.current;
+    const key = cartKey({ itemId, unit, addOns, notes });
+    commit({ ...current, items: current.items.filter((item) => cartKey(item) !== key) });
+  };
+  const clearCart = () => commit(emptyCart());
+  const subtotal = useMemo(() => cart.items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0), [cart.items]);
   return (
     <CartContext.Provider value={{
-      items, branchId, setBranchId, switchBranch, addItem, updateQuantity, removeItem, clearCart,
-      subtotal, cartKey, MINIMUM_ORDER_VALUE, meetsMinimumOrder, amountToReachMinimum,
-    }}>
-      {children}
-    </CartContext.Provider>
+      ...cart, switchBranch, addItem, replaceCart, updateQuantity, removeItem, clearCart, cartError,
+      subtotal, cartKey, MINIMUM_ORDER_VALUE, meetsMinimumOrder: subtotal >= MINIMUM_ORDER_VALUE || !cart.items.length,
+      amountToReachMinimum: Math.max(0, MINIMUM_ORDER_VALUE - subtotal),
+    }}>{children}</CartContext.Provider>
   );
 };
-
 export const useCart = () => useContext(CartContext);

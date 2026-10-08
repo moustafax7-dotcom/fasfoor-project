@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-const StatePanel = ({ title, description, to, actionLabel, onRetry, error = false }) => (
+const StatePanel = ({ title, description, to, actionLabel, onRetry, error = false }) => {
+  const location = useLocation();
+  return (
   <section className={`state-panel${error ? ' state-panel-error' : ''}`} role={error ? 'alert' : undefined}>
     <svg className="state-panel-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
       <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="1.5" />
@@ -9,9 +11,10 @@ const StatePanel = ({ title, description, to, actionLabel, onRetry, error = fals
     <h2>{title}</h2>
     {description && <p>{description}</p>}
     <div className="state-panel-actions">
-      {to && <Link className="hero-order-btn" to={to}>{actionLabel || 'تصفح المنيو'}</Link>}
+      {to && <Link className="hero-order-btn" to={to} state={to === "/login" ? { from: location.pathname + location.search } : undefined}>{actionLabel || 'تصفح المنيو'}</Link>}
       {onRetry && <button className="secondary-action" type="button" onClick={onRetry}>إعادة المحاولة</button>}
     </div>
   </section>
-);
+  );
+};
 export default StatePanel;

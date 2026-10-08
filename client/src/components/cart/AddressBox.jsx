@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCustomerAuth } from '../../context/CustomerAuthContext.jsx';
 import { getMyProfile } from '../../services/customerAuthService.js';
@@ -7,43 +7,35 @@ const AddressBox = ({ address, onChange }) => {
   const { isAuthenticated } = useCustomerAuth();
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [selectedId, setSelectedId] = useState('');
-
+  const [error, setError] = useState(null);
+  const currentAddress = useRef(address);
+  currentAddress.current = address;
   useEffect(() => {
-    if (!isAuthenticated) return;
-    getMyProfile().then((res) => {
-      const list = res.data.customer.addresses || [];
+    let active = true;
+    setSavedAddresses([]); setSelectedId(''); setError(null);
+    if (isAuthenticated) getMyProfile().then((response) => {
+      if (!active) return;
+      const list = response.data.customer.addresses || [];
       setSavedAddresses(list);
-      const def = list.find((a) => a.isDefault) || list[0];
-      if (def && !address) { setSelectedId(def._id); onChange(def.fullAddress); }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
-
-  const handleSelect = (id) => {
+      const defaultAddress = list.find((entry) => entry.isDefault) || list[0];
+      if (defaultAddress && !currentAddress.current) { setSelectedId(defaultAddress._id); onChange(defaultAddress.fullAddress); }
+    }).catch(() => { if (active) setError('تعذر تحميل العناوين المحفوظة. تقدر تكتب العنوان بنفسك.'); });
+    return () => { active = false; };
+  }, [isAuthenticated, onChange]);
+  const selectAddress = (id) => {
     setSelectedId(id);
-    const addr = savedAddresses.find((a) => a._id === id);
-    if (addr) onChange(addr.fullAddress);
+    const selected = savedAddresses.find((entry) => entry._id === id);
+    if (selected) onChange(selected.fullAddress);
   };
-
-  const handleManualEntry = () => {
-    const value = prompt('اكتب عنوان التوصيل:', address);
-    if (value) { setSelectedId(''); onChange(value); }
-  };
-
   return (
     <div className="address-box">
-      <div className="address-box-title">عنوان التوصيل</div>
-      {isAuthenticated && savedAddresses.length > 0 && (
-        <select className="address-select" value={selectedId} onChange={(e) => handleSelect(e.target.value)}>
-          <option value="" disabled>اختر عنوانًا محفوظًا</option>
-          {savedAddresses.map((a) => <option key={a._id} value={a._id}>{a.label || 'عنوان'} — {a.fullAddress}</option>)}
-        </select>
-      )}
-      {!isAuthenticated || !savedAddresses.length ? <p>{address || 'لم يتم إضافة عنوان بعد'}</p> : null}
-      <div className="address-box-actions">
-        <button className="change-address-btn" onClick={handleManualEntry}>✎ إدخال عنوان آخر</button>
-        {isAuthenticated && <Link to="/account/addresses" className="manage-addresses-link">إدارة عناويني</Link>}
-      </div>
+      <label className="address-box-title" htmlFor="checkout-address">عنوان التوصيل</label>
+      {!!savedAddresses.length && <select className="address-select" aria-label="اختيار عنوان محفوظ" value={selectedId} onChange={(event) => selectAddress(event.target.value)}>
+        <option value="">إدخال عنوان يدويًا</option>{savedAddresses.map((entry) => <option key={entry._id} value={entry._id}>{entry.label || 'عنوان'} — {entry.fullAddress}</option>)}
+      </select>}
+      <textarea id="checkout-address" autoComplete="street-address" maxLength={500} value={address} onChange={(event) => { setSelectedId(''); onChange(event.target.value); }} placeholder="المنطقة، الشارع، رقم العمارة والدور، وأقرب علامة مميزة" />
+      {error && <p className="form-error" role="alert">{error}</p>}
+      {isAuthenticated && <Link to="/account/addresses" className="manage-addresses-link">إدارة العناوين المحفوظة</Link>}
     </div>
   );
 };

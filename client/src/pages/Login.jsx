@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { customerReturnPath, normalizeDigits } from '../services/customerNavigation.js';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useCustomerAuth } from '../context/CustomerAuthContext.jsx';
 import { sendOtp } from '../services/customerAuthService.js';
@@ -19,10 +20,11 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const redirectTo = location.state?.from || '/account';
+  const redirectTo = customerReturnPath(location.state?.from);
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     setError(null); setSubmitting(true);
     try {
       await sendOtp(phone, name || undefined, referralCode || undefined);
@@ -36,6 +38,7 @@ const Login = () => {
 
   const handleVerify = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     setError(null); setSubmitting(true);
     try {
       await loginWithOtp(phone, otp);
@@ -51,11 +54,11 @@ const Login = () => {
           <h1>تسجيل الدخول</h1>
           <p className="auth-sub">الدخول برقم الهاتف وكود تحقق. لو الخدمة غير متاحة، هتظهر لك رسالة واضحة.</p>
           <label htmlFor="customer-phone">رقم الهاتف</label>
-          <input id="customer-phone" type="tel" inputMode="tel" autoComplete="tel" dir="ltr" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="01xxxxxxxxx" />
+          <input id="customer-phone" type="tel" inputMode="tel" autoComplete="tel" dir="ltr" required minLength={11} maxLength={11} pattern="01[0-9]{9}" value={phone} onChange={(e) => setPhone(normalizeDigits(e.target.value).replace(/[^0-9]/g, ""))} placeholder="01xxxxxxxxx" />
           {isNewUser && (
             <>
               <label htmlFor="customer-name">الاسم (أول مرة تدخل بالرقم ده)</label>
-              <input id="customer-name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
+              <input id="customer-name" autoComplete="name" maxLength={80} required value={name} onChange={(e) => setName(e.target.value)} />
               {showReferral ? (
                 <>
                   <label htmlFor="referral-code">كود دعوة (اختياري)</label>
@@ -75,10 +78,10 @@ const Login = () => {
           <h1>أدخل الكود</h1>
           <p className="auth-sub">بعتنالك كود تحقق على {phone}</p>
           <label htmlFor="verification-code">كود التحقق (6 أرقام)</label>
-          <input id="verification-code" type="text" dir="ltr" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" required minLength={6} maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="000000" />
+          <input id="verification-code" type="text" dir="ltr" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" required minLength={6} maxLength={6} value={otp} onChange={(e) => setOtp(normalizeDigits(e.target.value).replace(/[^0-9]/g, ""))} placeholder="000000" />
           {error && <div className="form-error" role="alert">{error}</div>}
           <button type="submit" className="auth-submit" disabled={submitting}>{submitting ? 'جاري التحقق...' : 'تأكيد الدخول'}</button>
-          <p className="auth-switch"><button type="button" className="link-btn" onClick={() => setStep('phone')}>تغيير الرقم</button></p>
+          <p className="auth-switch"><button type="button" className="link-btn" disabled={submitting} onClick={() => { setStep("phone"); setOtp(""); setError(null); }}>تغيير الرقم</button></p>
         </form>
       )}
     </main>

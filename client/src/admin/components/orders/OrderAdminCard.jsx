@@ -24,7 +24,7 @@ const OrderAdminCard = ({ order, onUpdateStatus }) => {
         <h4>{order.customer?.name}</h4>
         <span className="delivery-type">{order.deliveryType === 'delivery' ? 'توصيل' : 'استلام من الفرع'}</span>
       </div>
-      <ul className="order-admin-items">{order.items?.map((it, i) => <li key={i}>× {it.quantity} {it.name} · {unitLabels[it.unit] || it.unit}{!!it.addOns?.length && <small>الإضافات: {it.addOns.map((addon) => addon.name).join("، ")}</small>}</li>)}</ul>
+      <ul className="order-admin-items">{order.items?.map((it, i) => <li key={i}>× {it.quantity} {it.name} · {unitLabels[it.unit] || it.unit}{!!it.addOns?.length && <small>الإضافات: {it.addOns.map((addon) => addon.name).join("، ")}</small>}{it.notes && <small>ملاحظات الصنف: {it.notes}</small>}</li>)}</ul>
       {order.notes && <p className="order-notes">ملاحظات: {order.notes}</p>}
       <div className="order-admin-footer"><span className="order-total">{order.total} جنيه</span></div>
       {order.status === 'cancelled' && order.cancelReason && <p className="cancel-reason">السبب: {order.cancelReason}</p>}
