@@ -1,17 +1,14 @@
 import { createContext, useContext, useState } from 'react';
 import { verifyOtp as verifyOtpApi } from '../services/customerAuthService.js';
+import { sessionStore } from '../services/sessionStorage.js';
 
 const CustomerAuthContext = createContext();
 
 export const CustomerAuthProvider = ({ children }) => {
-  const [customer, setCustomer] = useState(() => {
-    const saved = localStorage.getItem('fasfoor_customer');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [customer, setCustomer] = useState(() => sessionStore.restore('customer'));
 
   const persist = (token, customerData) => {
-    localStorage.setItem('fasfoor_customer_token', token);
-    localStorage.setItem('fasfoor_customer', JSON.stringify(customerData));
+    sessionStore.save('customer', token, customerData);
     setCustomer(customerData);
   };
 
@@ -23,8 +20,7 @@ export const CustomerAuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('fasfoor_customer_token');
-    localStorage.removeItem('fasfoor_customer');
+    sessionStore.clear('customer');
     setCustomer(null);
   };
 

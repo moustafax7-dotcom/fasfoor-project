@@ -1,25 +1,21 @@
 import { createContext, useContext, useState } from 'react';
 import { loginAdmin } from '../services/authService';
+import { sessionStore } from '../services/sessionStorage.js';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [admin, setAdmin] = useState(() => {
-    const saved = localStorage.getItem('fasfoor_admin');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [admin, setAdmin] = useState(() => sessionStore.restore('admin'));
 
   const login = async (username, password) => {
     const res = await loginAdmin(username, password);
-    localStorage.setItem('fasfoor_admin_token', res.token);
-    localStorage.setItem('fasfoor_admin', JSON.stringify(res.admin));
+    sessionStore.save('admin', res.token, res.admin);
     setAdmin(res.admin);
     return res.admin;
   };
 
   const logout = () => {
-    localStorage.removeItem('fasfoor_admin_token');
-    localStorage.removeItem('fasfoor_admin');
+    sessionStore.clear('admin');
     setAdmin(null);
   };
 
